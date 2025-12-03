@@ -1,40 +1,39 @@
-const fs = require('fs');
-const path = require('path');
-const adaptersPath = path.join(__dirname, '../adapters');
-const adapters = {};
+/**
+ * AGGREGATOR SERVICE V4 (Optimized for Vercel)
+ */
+// 1. IMPORTS MANUELS (Obligatoire pour que Vercel trouve les fichiers)
+const adapters = {
+    hyperliquid: require('../adapters/hyperliquid'),
+    paradex: require('../adapters/paradex'),
+    vest: require('../adapters/vest'),
+    extended: require('../adapters/extended'),
+    lighter: require('../adapters/lighter'),
+    hibachi: require('../adapters/hibachi'),
+    aster: require('../adapters/aster'),
+    pacifica: require('../adapters/pacifica'),
+    variational: require('../adapters/variational')
+};
 
-// Chargement dynamique des adaptateurs
-fs.readdirSync(adaptersPath).forEach(file => {
-    if (file === 'base.adapter.js' || !file.endsWith('.js')) return;
-    try {
-        const adapter = require(path.join(adaptersPath, file));
-        if (adapter.name) adapters[adapter.name] = adapter;
-    } catch (e) {
-        console.error("Failed to load adapter", file);
-    }
-});
+// --- CONFIGURATION ---
+const CACHE_DURATION = 15 * 1000; // 15 secondes de cache
+const API_TIMEOUT = 10000; // 10 secondes (Vital pour Hyperliquid)
 
-// --- SYSTÈME DE CACHE ---
+// --- ÉTAT DU CACHE ---
 let cache = { data: [], lastFetch: 0 };
-
-const CACHE_DURATION = 15 * 1000; // 15 secondes de cache (ajustable)
 
 async function getAllMarketData() {
     const now = Date.now();
 
-    // 1. Si le cache est encore frais, on le renvoie instantanément (0ms de latence)
+    // 1. Cache Hit
     if (cache.data.length > 0 && (now - cache.lastFetch < CACHE_DURATION)) {
         return cache.data;
     }
-
-    // 2. Sinon, on rafraîchit les données
+    // 2. Cache Miss - Refresh
     console.log(`[AGGREGATOR] Refreshing data from ${Object.keys(adapters).length} exchanges...`);
-
     const promises = Object.values(adapters).map(async (adapter) => {
         try {
-            // Timeout de sécurité : si un exchange met > 3s, on l'ignore pour ne pas bloquer le site
             const timeoutPromise = new Promise((_, reject) =>
-                setTimeout(() => reject(new Error('Timeout')), 3000)
+                setTimeout(() => reject(new Error('Timeout')), API_TIMEOUT)
             );
 
             return await Promise.race([adapter.getGlobalData(), timeoutPromise]);
@@ -46,8 +45,7 @@ async function getAllMarketData() {
 
     const results = await Promise.all(promises);
     const flatResults = results.flat();
-
-    // Mise à jour du cache seulement si on a récupéré des données
+    // Mise à jour du cache uniquement si succès
     if (flatResults.length > 0) {
         cache.data = flatResults;
         cache.lastFetch = now;
