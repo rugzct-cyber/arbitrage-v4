@@ -15,7 +15,7 @@
     text-transform: uppercase;
     font-size: 12px;
     letter-spacing: 0.05em;
-    transition: all 0.3s ease;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 0;
     /* No border radius for underline style */
 }
@@ -59,20 +59,23 @@
     transform: translateY(0);
 }
 
-/* EXCHANGE TOGGLES */
+/* EXCHANGE TOGGLES (Navigation List Items) */
 .exchange-toggle {
     display: flex;
     align-items: center;
-    padding: 10px 14px;
-    margin-bottom: 8px;
-    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 4px;
+    border-radius: 0 8px 8px 0;
+    /* Round only right side */
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid transparent;
+    border-left: 3px solid transparent;
+    /* Context indicator base */
     color: var(--text-secondary);
     font-weight: 600;
     font-size: 13px;
     letter-spacing: 0.03em;
+    background: transparent;
 }
 
 .exchange-toggle img {
@@ -99,10 +102,10 @@
 
 /* ACTIVE STATE */
 .exchange-toggle.active {
-    background: rgba(240, 230, 140, 0.05);
-    border-color: var(--border-active);
+    background: linear-gradient(90deg, rgba(240, 230, 140, 0.1), transparent);
+    border-left-color: var(--gold);
     color: var(--gold);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    box-shadow: none;
 }
 
 .exchange-toggle.active img {
@@ -137,27 +140,32 @@
 }
 
 .strategy-val {
-    font-family: var(--font-main);
-    font-weight: 700;
+    font-family: var(--font-mono);
+    font-weight: 600;
     font-size: 11px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 4px 12px;
+    /* Pill shape padding */
+    border-radius: 50px;
+    display: inline-block;
+    min-width: 60px;
+    text-align: center;
     color: var(--text-main);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     cursor: pointer;
-    padding: 4px 12px;
-    border-radius: 20px;
-    /* Pill Shape */
-    border: 1px solid var(--border);
-    background: rgba(255, 255, 255, 0.02);
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .strategy-val:hover {
-    background: var(--gold-dim);
-    color: var(--gold);
+    background: var(--gold);
     border-color: var(--gold);
-    box-shadow: 0 0 12px var(--gold-glow);
+    color: #000;
+    /* Contrast for legibility on gold */
     transform: translateY(-1px);
+    /* Tactile lift */
+    box-shadow: 0 4px 12px var(--gold-glow);
 }
 
 /* UTILITIES */
