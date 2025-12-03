@@ -40,6 +40,9 @@ export function renderCurrentView() {
     const tableId = isFunding ? 'funding-table' : 'price-table';
     const thead = document.getElementById(tableId)?.querySelector('thead');
     if (thead) {
+        if (isFunding) {
+            thead.rows[0].cells[1].textContent = state.showAverage ? 'AVG APR (30D)' : (state.fundingBasis === 'apy' ? 'APY' : 'APR');
+        }
         Array.from(thead.rows[0].cells).forEach(cell => cell.style.color = '');
         if (state.sort.column === 'pair') thead.rows[0].cells[0].style.color = '#F0E68C';
         else if (state.sort.column === 'metric') thead.rows[0].cells[1].style.color = '#F0E68C';
@@ -264,9 +267,9 @@ export function initTabs() {
  * Initializes funding toggles
  */
 export function initFundingToggles() {
-    document.querySelectorAll('.toggle-btn').forEach(btn => {
+    document.querySelectorAll('.toggle-btn[data-basis]').forEach(btn => {
         btn.onclick = () => {
-            document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.toggle-btn[data-basis]').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             state.fundingBasis = btn.dataset.basis;
             saveState();
@@ -276,6 +279,19 @@ export function initFundingToggles() {
             }
         };
     });
+
+    const avgBtn = document.getElementById('btn-toggle-avg');
+    if (avgBtn) {
+        avgBtn.onclick = () => {
+            state.showAverage = !state.showAverage;
+            avgBtn.classList.toggle('active', state.showAverage);
+            saveState();
+            if (state.rawFundingData.length > 0) {
+                state.fundingData = processData(state.rawFundingData, 'apr');
+                renderCurrentView();
+            }
+        };
+    }
 }
 
 /**

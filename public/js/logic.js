@@ -20,8 +20,14 @@ export function processData(rawData, metricKey) {
         let val = metricKey === 'apr' ? item.apr : item.price;
 
         if (metricKey === 'apr') {
-            if (state.fundingBasis === '8h') val = val / 1095;
-            if (state.fundingBasis === '1h') val = val / 8760;
+            if (state.showAverage) {
+                const history = generateHistory(item.apr, 'apr', '30D');
+                const stats = calculateStats(history);
+                val = stats.avg;
+            } else {
+                if (state.fundingBasis === '8h') val = val / 1095;
+                if (state.fundingBasis === '1h') val = val / 8760;
+            }
         }
 
         pairs[item.pair].exchanges[item.exchange] = val;
