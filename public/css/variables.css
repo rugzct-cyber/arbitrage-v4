@@ -1,16 +1,47 @@
-/* --- ARBITRADE PREMIUM THEME (V1) --- */
+/* --- ARBITRADE PREMIUM THEME (V2) --- */
 :root {
-    --bg-main: #050505;
-    --bg-secondary: #111111;
-    --bg-panel: #161616;
-    --gold: #F0E68C;
-    --text-main: #FFFFFF;
-    --text-muted: #A1A1AA;
-    --border: rgba(255, 255, 255, 0.08);
+    /* --- NOUVELLE PALETTE --- */
+
+    /* Couleurs de Fond */
+    --bg-main: #030303;
+    /* Noir Profond (Fond du site) */
+    --bg-secondary: #161612;
+    /* Noir Olive (Sidebar, Header) */
+    --bg-panel: #161612;
+    /* Noir Olive (Tableaux, Cartes) */
+    --bg-card: rgba(22, 22, 18, 0.8);
+    /* Variante transparente pour les cartes */
+
+    /* Couleurs de Texte & Accents */
+    --text-main: #F5F8C2;
+    /* Crème Doré (Couleur Lettre) */
+    --gold: #F5F8C2;
+    /* On aligne l'accent Gold sur la couleur lettre */
+    --text-muted: #8a8a7b;
+    /* Gris-Beige pour le texte secondaire (calculé pour aller avec) */
+
+    /* Bordures */
+    --border: rgba(245, 248, 194, 0.1);
+    /* Bordure subtile couleur crème */
+
+    /* Trading Colors (Inchangées) */
     --green: #10B981;
     --red: #EF4444;
+
+    /* Polices */
     --font-main: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
+
+    /* Couleurs Exchanges */
+    --ex-paradex: #9D4EDD;
+    --ex-vest: #10B981;
+    --ex-extended: #00D9FF;
+    --ex-hyperliquid: #3B82F6;
+    --ex-lighter: #FBBF24;
+    --ex-hibachi: #EF4444;
+    --ex-aster: #F97316;
+    --ex-pacifica: #EC4899;
+    --ex-variational: #14B8A6;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap');
