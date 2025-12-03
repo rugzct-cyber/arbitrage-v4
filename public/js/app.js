@@ -29,6 +29,7 @@ let state = {
     activeTab: 'funding',
     sortColumn: 'metric',
     sortOrder: 'desc',
+    fundingBasis: 'apy',
     chartInstance: null
 };
 
@@ -37,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initTabs();
     initSidebar();
     initSorting();
+    initFundingToggles();
     refreshAllData();
     document.getElementById('btn-refresh').addEventListener('click', refreshAllData);
 });
@@ -56,8 +58,7 @@ async function refreshAllData() {
     renderSkeleton();
 
     try {
-        // Artificial delay to show off the skeleton animation (optional, remove for prod)
-        await new Promise(r => setTimeout(r, 500));
+
 
         const [fundingRes, priceRes] = await Promise.all([
             fetch(`${API_URL}/funding`),
@@ -107,7 +108,15 @@ function processData(rawData, metricKey) {
     const pairs = {};
     (rawData.data || []).forEach(item => {
         if (!pairs[item.pair]) pairs[item.pair] = { pair: item.pair, exchanges: {} };
-        pairs[item.pair].exchanges[item.exchange] = metricKey === 'apr' ? item.apr : item.price;
+
+        let val = metricKey === 'apr' ? item.apr : item.price;
+
+        if (metricKey === 'apr') {
+            if (state.fundingBasis === '8h') val = val / 1095; // 3 * 365
+            if (state.fundingBasis === '1h') val = val / 8760; // 24 * 365
+        }
+
+        pairs[item.pair].exchanges[item.exchange] = val;
     });
 
     return Object.values(pairs).map(row => {
@@ -130,6 +139,20 @@ function processData(rawData, metricKey) {
             row.metric = min > 0 ? ((max - min) / min) * 100 : 0;
         }
         return row;
+    });
+}
+
+/**
+ * Initializes funding toggle buttons.
+ */
+function initFundingToggles() {
+    document.querySelectorAll('.toggle-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            state.fundingBasis = btn.dataset.basis;
+            refreshAllData();
+        });
     });
 }
 
@@ -319,7 +342,7 @@ function renderCurrentView() {
         // 2. Create Hidden Chart Row
         const chartTr = document.createElement('tr');
         chartTr.className = 'chart-row';
-        chartTr.id = `chart-${row.pair}`;
+        chartTr.id = `chart-${isFunding ? 'funding' : 'price'}-${row.pair}`;
         chartTr.innerHTML = `<td colspan="${3 + EXCHANGES.length}"><div class="inline-chart-container"></div></td>`;
         tbody.appendChild(chartTr);
     });
@@ -334,7 +357,7 @@ function renderCurrentView() {
  * @param {boolean} isFunding - Whether the current view is Funding.
  */
 function toggleDetails(row, tr, isFunding) {
-    const chartRow = document.getElementById(`chart-${row.pair}`);
+    const chartRow = document.getElementById(`chart-${isFunding ? 'funding' : 'price'}-${row.pair}`);
     const isActive = chartRow.classList.contains('active');
 
     // Close other open rows
@@ -344,10 +367,8 @@ function toggleDetails(row, tr, isFunding) {
     if (!isActive) {
         chartRow.classList.add('active');
         tr.classList.add('selected-row');
-        // Delay chart rendering slightly to allow CSS transition to start
-        requestAnimationFrame(() => {
-            renderChart(row, chartRow.querySelector('.inline-chart-container'), isFunding, '30D');
-        });
+        // Render chart immediately
+        renderChart(row, chartRow.querySelector('.inline-chart-container'), isFunding, '30D');
     }
 }
 
