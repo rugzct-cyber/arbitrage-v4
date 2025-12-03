@@ -29,6 +29,9 @@ let state = {
     activeTab: 'funding',
     sortColumn: 'metric',
     sortOrder: 'desc',
+    sortColumn: 'metric',
+    sortOrder: 'desc',
+    rawFundingData: [], // Nouvelle variable pour stocker la source
     fundingBasis: 'apy',
     chartInstance: null
 };
@@ -65,8 +68,13 @@ async function refreshAllData() {
             fetch(`${API_URL}/price`)
         ]);
 
-        state.fundingData = processData(await fundingRes.json(), 'apr');
-        state.priceData = processData(await priceRes.json(), 'price');
+        const fundingJson = await fundingRes.json();
+        const priceJson = await priceRes.json();
+
+        // SAUVEGARDE POUR CALCUL LOCAL
+        state.rawFundingData = fundingJson.data || [];
+        state.fundingData = processData(state.rawFundingData, 'apr');
+        state.priceData = processData(priceJson.data || [], 'price');
 
         renderCurrentView();
         updateLastUpdate();
@@ -106,7 +114,8 @@ function renderSkeleton() {
  */
 function processData(rawData, metricKey) {
     const pairs = {};
-    (rawData.data || []).forEach(item => {
+    const list = Array.isArray(rawData) ? rawData : (rawData.data || []);
+    list.forEach(item => {
         if (!pairs[item.pair]) pairs[item.pair] = { pair: item.pair, exchanges: {} };
 
         let val = metricKey === 'apr' ? item.apr : item.price;
@@ -142,17 +151,23 @@ function processData(rawData, metricKey) {
     });
 }
 
-/**
- * Initializes funding toggle buttons.
- */
 function initFundingToggles() {
-    document.querySelectorAll('.toggle-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    const toggles = document.querySelectorAll('.toggle-btn');
+    toggles.forEach(btn => {
+        btn.onclick = () => {
+            // UI Update
+            toggles.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+
+            // State Update
             state.fundingBasis = btn.dataset.basis;
-            refreshAllData();
-        });
+
+            // RE-CALCUL INSTANTANÉ (Magie !)
+            if (state.rawFundingData.length > 0) {
+                state.fundingData = processData(state.rawFundingData, 'apr');
+                renderCurrentView();
+            }
+        };
     });
 }
 
@@ -522,12 +537,19 @@ function updateVisibility() {
 function initTabs() {
     document.querySelectorAll('.tab-button').forEach(btn => {
         btn.onclick = () => {
+            // Gestion des classes actives
             document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+
+            // Changement d'état
             state.activeTab = btn.dataset.tab;
+
+            // Gestion de l'affichage (DOM)
             document.getElementById('funding-view').style.display = state.activeTab === 'funding' ? 'block' : 'none';
             document.getElementById('price-view').style.display = state.activeTab === 'price' ? 'block' : 'none';
-            refreshAllData();
+
+            // Rendu INSTANTANÉ avec les données en mémoire
+            renderCurrentView();
         };
     });
 }
