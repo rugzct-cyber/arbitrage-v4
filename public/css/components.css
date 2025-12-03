@@ -1,29 +1,37 @@
+/* public/css/components.css */
+
 /* Reusable UI Components */
 
-/* TAB BUTTONS */
+/* TAB BUTTONS (Modern Underline Style) */
 .tab-button {
     background: transparent;
-    border: 1px solid transparent;
-    color: var(--text-muted);
-    padding: 8px 16px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    /* Underline base */
+    color: var(--text-secondary);
+    padding: 12px 20px;
     font-weight: 600;
     cursor: pointer;
-    border-radius: 6px;
     text-transform: uppercase;
     font-size: 12px;
-    transition: all 0.2s ease;
+    letter-spacing: 0.05em;
+    transition: all 0.3s ease;
+    border-radius: 0;
+    /* No border radius for underline style */
 }
 
 .tab-button:hover {
     color: var(--text-main);
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.02);
 }
 
 .tab-button.active {
-    background: var(--gold);
-    color: #000;
-    border-color: var(--gold);
-    box-shadow: 0 0 15px rgba(240, 230, 140, 0.2);
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+    background: transparent;
+    box-shadow: none;
+    /* Remove old box shadow */
+    text-shadow: 0 0 15px rgba(240, 230, 140, 0.3);
 }
 
 /* REFRESH BUTTON */
@@ -37,19 +45,21 @@
     cursor: pointer;
     font-size: 12px;
     text-transform: uppercase;
-    transition: all 0.2s;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(240, 230, 140, 0.2);
 }
 
 #btn-refresh:hover {
-    box-shadow: 0 0 15px rgba(240, 230, 140, 0.4);
-    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(240, 230, 140, 0.4);
+    transform: translateY(-2px);
+    filter: brightness(1.1);
 }
 
 #btn-refresh:active {
     transform: translateY(0);
 }
 
-/* EXCHANGE TOGGLES (Style "Active Gold" V4) */
+/* EXCHANGE TOGGLES */
 .exchange-toggle {
     display: flex;
     align-items: center;
@@ -58,10 +68,8 @@
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 0px solid transparent;
-    /* Bordure invisible par défaut */
-    color: var(--text-muted);
-    /* Gris quand inactif */
+    border: 1px solid transparent;
+    color: var(--text-secondary);
     font-weight: 600;
     font-size: 13px;
     letter-spacing: 0.03em;
@@ -73,34 +81,28 @@
     margin-right: 12px;
     border-radius: 50%;
     filter: grayscale(100%);
-    /* Gris quand inactif */
     transition: all 0.2s;
-    opacity: 0.7;
+    opacity: 0.6;
 }
 
-/* Effet de surbrillance au survol (Actif ou Inactif) */
 .exchange-toggle:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: #fff;
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-main);
+    transform: translateX(4px);
+    /* Micro-interaction */
 }
 
 .exchange-toggle:hover img {
     filter: grayscale(0%);
-    opacity: 1;
+    opacity: 0.9;
 }
 
-/* --- ÉTAT ACTIF (SÉLECTIONNÉ) --- */
+/* ACTIVE STATE */
 .exchange-toggle.active {
-    background: rgba(240, 230, 140, 0.08);
-    /* Fond doré très léger */
-    border-color: rgba(240, 230, 140, 0.4);
-    /* Bordure dorée */
+    background: rgba(240, 230, 140, 0.05);
+    border-color: var(--border-active);
     color: var(--gold);
-    /* Texte doré */
-    box-shadow: 0 0 10px rgba(240, 230, 140, 0.05);
-    /* Petit glow subtil */
-    border-left: 3.5px solid rgba(240, 230, 140, 0.4);
-    /* Assure la cohérence */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
 .exchange-toggle.active img {
@@ -108,28 +110,81 @@
     opacity: 1;
 }
 
-/* Survol d'un élément déjà actif */
-.exchange-toggle.active:hover {
-    background: rgba(240, 230, 140, 0.15);
-    /* Fond doré un peu plus fort */
+/* STRATEGY PILLS (Long/Short Badges) */
+.strategy-cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+}
+
+.strategy-line {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.strategy-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    min-width: 45px;
+    text-align: right;
+    opacity: 0.6;
+}
+
+.strategy-val {
+    font-family: var(--font-main);
+    font-weight: 700;
+    font-size: 11px;
+    color: var(--text-main);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    padding: 4px 12px;
+    border-radius: 20px;
+    /* Pill Shape */
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.02);
+    transition: all 0.2s ease;
+}
+
+.strategy-val:hover {
+    background: var(--gold-dim);
+    color: var(--gold);
     border-color: var(--gold);
+    box-shadow: 0 0 12px var(--gold-glow);
+    transform: translateY(-1px);
+}
+
+/* UTILITIES */
+.text-long {
+    color: var(--green);
+}
+
+.text-short {
+    color: var(--red);
 }
 
 /* STAT CARDS */
 .stat-card {
-    background: rgba(255, 255, 255, 0.02);
-    border: none;
-    border-radius: 8px;
-    padding: 16px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
     text-align: center;
     position: relative;
     overflow: hidden;
-    transition: transform 0.2s;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .stat-card:hover {
-    transform: translateY(-2px);
-    background: rgba(255, 255, 255, 0.04);
+    transform: translateY(-4px);
+    border-color: var(--border-active);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .stat-card::before {
@@ -140,46 +195,36 @@
     width: 100%;
     height: 2px;
     background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    opacity: 0.5;
+    opacity: 0.3;
 }
 
 .stat-label {
-    font-size: 10px;
+    font-size: 11px;
     color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     font-weight: 600;
 }
 
 .stat-value {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--text-main);
     font-family: var(--font-mono);
 }
 
 .stat-value.gold {
     color: var(--gold);
-    text-shadow: 0 0 10px rgba(240, 230, 140, 0.2);
-}
-
-.stat-value.cyan {
-    color: #22d3ee;
+    text-shadow: 0 0 15px var(--gold-glow);
 }
 
 /* FUNDING TOGGLES */
-.table-header-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-}
-
 .funding-toggles {
-    background: #000;
+    background: var(--bg-secondary);
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 20px;
+    /* Rounded container */
     padding: 4px;
     display: flex;
     gap: 4px;
@@ -189,51 +234,26 @@
     background: transparent;
     border: none;
     color: var(--text-secondary);
-    padding: 4px 12px;
+    padding: 6px 16px;
     font-size: 11px;
     font-weight: 700;
-    border-radius: 6px;
+    border-radius: 16px;
+    /* Rounded buttons */
     cursor: pointer;
     font-family: var(--font-mono);
     transition: all 0.2s;
 }
 
 .toggle-btn:hover {
-    color: #fff;
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .toggle-btn.active {
-    background: #111;
+    background: var(--bg-main);
     color: var(--gold);
-    box-shadow: 0 0 10px rgba(240, 230, 140, 0.1);
-    border: 1px solid rgba(240, 230, 140, 0.2);
-}
-
-/* TOOLTIP */
-.has-tooltip {
-    position: relative;
-    cursor: pointer;
-}
-
-.has-tooltip:hover::after {
-    content: "Show Chart";
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--bg-secondary);
-    border: 1px solid var(--gold);
-    color: var(--gold);
-    padding: 4px 8px;
-    font-size: 10px;
-    border-radius: 4px;
-    white-space: nowrap;
-    pointer-events: none;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    margin-bottom: 8px;
-    z-index: 99;
-    opacity: 1;
-    transition: opacity 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-active);
 }
 
 /* SKELETON LOADING */
