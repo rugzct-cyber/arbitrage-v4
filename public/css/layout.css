@@ -31,11 +31,24 @@
     height: calc(100vh - 70px);
 }
 
+/* SIDEBAR (Glassmorphism Dark) */
 #sidebar {
-    background: var(--bg-secondary);
+    /* Fond translucide sombre */
+    background: rgba(18, 18, 18, 0.6);
+    backdrop-filter: blur(12px);
+    /* L'effet de flou magique */
+    -webkit-backdrop-filter: blur(12px);
+
+    /* Bordure subtile pour le détacher */
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+
+    /* Espacement */
     padding: 24px;
-    border-right: 1px solid var(--border);
     overflow-y: auto;
+
+    /* Ombre légère pour la profondeur */
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2);
+    z-index: 10;
 }
 
 #sidebar h3 {
