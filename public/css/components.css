@@ -59,22 +59,22 @@
     transform: translateY(0);
 }
 
-/* EXCHANGE TOGGLES (Navigation List Items) */
+/* EXCHANGE TOGGLES (Floating Button Style) */
 .exchange-toggle {
     display: flex;
     align-items: center;
-    padding: 12px 16px;
-    margin-bottom: 4px;
-    border-radius: 0 8px 8px 0;
-    /* Round only right side */
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    /* Distinct separation */
+    border-radius: 8px;
+    /* Rounded on all sides */
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    border-left: 3px solid transparent;
-    /* Context indicator base */
-    color: var(--text-secondary);
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    /* Prepare for active state */
+    color: var(--text-muted);
     font-weight: 600;
     font-size: 13px;
-    letter-spacing: 0.03em;
     background: transparent;
 }
 
@@ -89,10 +89,9 @@
 }
 
 .exchange-toggle:hover {
-    background: rgba(255, 255, 255, 0.03);
-    color: var(--text-main);
-    transform: translateX(4px);
-    /* Micro-interaction */
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    transform: translateY(-1px);
 }
 
 .exchange-toggle:hover img {
@@ -102,10 +101,14 @@
 
 /* ACTIVE STATE */
 .exchange-toggle.active {
-    background: linear-gradient(90deg, rgba(240, 230, 140, 0.1), transparent);
-    border-left-color: var(--gold);
+    background: rgba(240, 230, 140, 0.1);
+    /* Gold Dim background */
+    border-color: rgba(240, 230, 140, 0.4);
+    /* Subtle Gold border */
     color: var(--gold);
-    box-shadow: none;
+    box-shadow: 0 0 15px rgba(240, 230, 140, 0.05);
+    /* Remove the old left-border style if present */
+    border-left: 1px solid rgba(240, 230, 140, 0.4);
 }
 
 .exchange-toggle.active img {
