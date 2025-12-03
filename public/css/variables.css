@@ -1,38 +1,40 @@
-/* --- ARBITRADE PREMIUM THEME (CHART MATCH) --- */
+/* public/css/variables.css */
 :root {
-    /* --- PALETTE KHAKI & DARK --- */
+    /* --- COULEURS DE FOND (Profondeur) --- */
+    --bg-main: #0a0a0a;
+    /* Noir quasi pur */
+    --bg-secondary: #111111;
+    /* Sidebar */
+    --bg-panel: #161616;
+    /* Fond des tables */
+    --bg-card-hover: #1f1f1f;
+    /* Hover state plus clair */
 
-    /* Couleurs de Fond */
-    --bg-main: #050505;
-    /* Noir très profond (mais pas absolu) */
-    --bg-secondary: #0F0F0F;
-    /* Gris très sombre (Sidebar) */
-    --bg-panel: #141414;
-    /* Gris Anthracite (Tableaux) */
-    --bg-card: rgba(20, 20, 20, 0.6);
-    /* Transparence sombre */
-
-    /* Couleurs de Texte */
-    --text-main: #F0E68C;
-    /* Khaki (Même couleur que le Graphique) */
-    --text-secondary: #BDB76B;
-    /* Dark Khaki (Sous-titres) */
-    --text-muted: #6B6B6B;
-    /* Gris moyen (Labels discrets) */
-
-    /* Accents */
+    /* --- TYPOGRAPHIE (Hierarchie) --- */
+    /* Le texte principal devient blanc cassé pour la lisibilité */
+    --text-main: #EAEAEA;
+    /* Le texte secondaire pour les labels */
+    --text-secondary: #888888;
+    /* Ton accent Khaki/Gold devient plus vibrant pour ressortir sur le gris */
     --gold: #F0E68C;
-    /* Khaki (Boutons, Gains, Graphiques) */
+    --gold-dim: rgba(240, 230, 140, 0.15);
+    /* Pour les fonds subtils */
+    --gold-glow: rgba(240, 230, 140, 0.4);
+    /* Pour les effets néon */
 
-    /* Bordures */
-    --border: rgba(240, 230, 140, 0.15);
-    /* Bordure subtile Khaki */
+    /* --- BORDURES & STRUCTURE --- */
+    --border: rgba(255, 255, 255, 0.08);
+    --border-active: rgba(240, 230, 140, 0.3);
+    --radius-main: 12px;
+    --radius-sm: 6px;
 
-    /* Trading Colors */
-    --green: #10B981;
-    --red: #EF4444;
+    /* --- TRADING COLORS (Ajustées pour être moins agressives) --- */
+    --green: #4ADE80;
+    /* Plus pastel/neon que le vert pur */
+    --red: #F87171;
+    /* Plus doux */
 
-    /* Polices */
+    /* Fonts inchangées (Excellent choix Inter/JetBrains) */
     --font-main: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
 
