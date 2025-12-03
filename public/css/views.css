@@ -111,13 +111,15 @@ tr.selected-row td {
     font-family: var(--font-main);
     font-weight: 700;
     font-size: 12px;
-    color: var(--text-primary);
+    color: var(--gold);
+    /* COULEUR DORÉE PAR DÉFAUT */
     text-transform: uppercase;
     letter-spacing: 0.05em;
     cursor: pointer;
     padding: 2px 8px;
     border-radius: 4px;
     border: 1px solid transparent;
+    /* On garde les transitions existantes */
 }
 
 .strategy-val:hover {

@@ -1,5 +1,5 @@
 const { getAllMarketData } = require("../src/services/aggregator");
-const { comparePrices } = require("../src/services/comparator");
+
 const { handleError } = require("../src/utils/errorHandler");
 
 module.exports = async (req, res) => {
