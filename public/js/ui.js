@@ -153,8 +153,8 @@ export function renderChart(row, container, isFunding, period) {
     const ctx = container.querySelector('canvas').getContext('2d');
 
     const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, 'rgba(240, 230, 140, 0.2)');
-    gradient.addColorStop(1, 'rgba(240, 230, 140, 0)');
+    gradient.addColorStop(0, 'rgba(6, 182, 212, 0.2)');
+    gradient.addColorStop(1, 'rgba(6, 182, 212, 0)');
 
     state.chartInstance = new Chart(ctx, {
         type: 'line',
@@ -163,7 +163,7 @@ export function renderChart(row, container, isFunding, period) {
             datasets: [{
                 label: isFunding ? 'APR %' : 'Spread %',
                 data: history,
-                borderColor: '#F0E68C',
+                borderColor: '#06B6D4',
                 backgroundColor: gradient,
                 borderWidth: 2,
                 pointRadius: 0,
@@ -181,14 +181,17 @@ export function renderChart(row, container, isFunding, period) {
                 tooltip: {
                     mode: 'index',
                     intersect: false,
-                    backgroundColor: 'rgba(0,0,0,0.8)',
-                    titleColor: '#F0E68C',
+                    backgroundColor: '#111',
+                    titleColor: '#FFF',
+                    bodyColor: '#CCC',
+                    borderColor: '#333',
+                    borderWidth: 1,
                     bodyFont: { family: 'JetBrains Mono' }
                 }
             },
             scales: {
                 x: { display: false },
-                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#666', font: { family: 'JetBrains Mono' } } }
+                y: { grid: { color: '#1A1A1A' }, ticks: { color: '#666', font: { family: 'JetBrains Mono' } } }
             },
             interaction: { mode: 'nearest', axis: 'x', intersect: false }
         }

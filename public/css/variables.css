@@ -1,25 +1,33 @@
 /* public/css/variables.css */
 :root {
-    /* --- PALETTE 1: ELECTRIC TECH --- */
+    /* --- PALETTE 2: ULTRA-PREMIUM VOID --- */
 
     /* Backgrounds */
-    --bg-main: #0B1120;
-    --bg-secondary: #111827;
-    --bg-panel: #1E293B;
-    --bg-card-hover: #334155;
+    --bg-main: #000000;
+    /* True Black */
+    --bg-secondary: #050505;
+    /* Sidebar */
+    --bg-panel: #0A0A0A;
+    /* Cards/Tables - Subtle contrast */
+    --bg-card-hover: #111111;
+    /* Interactive state */
 
     /* Typography */
-    --text-main: #F1F5F9;
+    --text-main: #EDEDED;
+    /* High contrast white */
     --text-secondary: #94A3B8;
+    /* Blue-Grey */
     --text-muted: #64748B;
 
     /* Accents (Cyan mapped to --gold variable) */
     --gold: #06B6D4;
+    /* Electric Cyan */
     --gold-dim: rgba(6, 182, 212, 0.1);
-    --gold-glow: rgba(6, 182, 212, 0.4);
+    --gold-glow: rgba(6, 182, 212, 0.25);
 
     /* Borders */
-    --border: #334155;
+    --border: #1A1A1A;
+    /* Almost invisible borders */
     --border-active: #06B6D4;
 
     /* Status */
