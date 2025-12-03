@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arbitrade - Arbitrage Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <header id="topbar">
+        <div id="logo">ARBITRADE</div>
+        <div>
+            <button class="tab-button active" data-tab="funding">Funding</button>
+            <button class="tab-button" data-tab="price">Price</button>
+        </div>
+        <div style="display:flex; align-items:center; gap:15px;">
+            <span id="last-update" style="color:#666; font-size:12px;">--:--</span>
+            <button id="btn-refresh">REFRESH</button>
+        </div>
+    </header>
+    <div id="app-layout">
+        <aside id="sidebar">
+            <h3>Exchanges</h3>
+            <div id="exchanges-list">
+                <button class="exchange-toggle" data-exchange="paradex"><img src="assets/logos/paradex.png"
+                        alt="Paradex">Paradex</button>
+                <button class="exchange-toggle" data-exchange="vest"><img src="assets/logos/vest.png"
+                        alt="Vest">Vest</button>
+                <button class="exchange-toggle" data-exchange="extended"><img src="assets/logos/extended.png"
+                        alt="Extended">Extended</button>
+                <button class="exchange-toggle" data-exchange="hyperliquid"><img src="assets/logos/hyperliquid.png"
+                        alt="Hyperliquid">Hyperliquid</button>
+                <button class="exchange-toggle" data-exchange="lighter"><img src="assets/logos/lighter.png"
+                        alt="Lighter">Lighter</button>
+                <button class="exchange-toggle" data-exchange="hibachi"><img src="assets/logos/hibachi.png"
+                        alt="Hibachi">Hibachi</button>
+                <button class="exchange-toggle" data-exchange="aster"><img src="assets/logos/aster.png"
+                        alt="Aster">Aster</button>
+                <button class="exchange-toggle" data-exchange="pacifica"><img src="assets/logos/pacifica.png"
+                        alt="Pacifica">Pacifica</button>
+                <button class="exchange-toggle" data-exchange="variational"><img src="assets/logos/variational.png"
+                        alt="Variational">Variational</button>
+            </div>
+        </aside>
+        <main id="main-content">
+            <section id="funding-view">
+                <h2 class="section-title">Funding Opportunities</h2>
+                <div class="table-container">
+                    <table id="funding-table">
+                        <thead>
+                            <tr>
+                                <th>Pair</th>
+                                <th>APR</th>
+                                <th>Strategy</th>
+                                <th data-exchange="paradex">Paradex</th>
+                                <th data-exchange="vest">Vest</th>
+                                <th data-exchange="extended">Extended</th>
+                                <th data-exchange="hyperliquid">Hyperliquid</th>
+                                <th data-exchange="lighter">Lighter</th>
+                                <th data-exchange="hibachi">Hibachi</th>
+                                <th data-exchange="aster">Aster</th>
+                                <th data-exchange="pacifica">Pacifica</th>
+                                <th data-exchange="variational">Variational</th>
+                            </tr>
+                        </thead>
+                        <tbody id="funding-table-body"></tbody>
+                    </table>
+                </div>
+                <div id="funding-details-panel"></div>
+            </section>
+            <section id="price-view" class="hidden">
+                <h2 class="section-title">Price Arbitrage</h2>
+                <div class="table-container">
+                    <table id="price-table">
+                        <thead>
+                            <tr>
+                                <th>Pair</th>
+                                <th>Spread</th>
+                                <th>Strategy</th>
+                                <th data-exchange="paradex">Paradex</th>
+                                <th data-exchange="vest">Vest</th>
+                                <th data-exchange="extended">Extended</th>
+                                <th data-exchange="hyperliquid">Hyperliquid</th>
+                                <th data-exchange="lighter">Lighter</th>
+                                <th data-exchange="hibachi">Hibachi</th>
+                                <th data-exchange="aster">Aster</th>
+                                <th data-exchange="pacifica">Pacifica</th>
+                                <th data-exchange="variational">Variational</th>
+                            </tr>
+                        </thead>
+                        <tbody id="price-table-body"></tbody>
+                    </table>
+                </div>
+                <div id="price-details-panel"></div>
+            </section>
+        </main>
+    </div>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
