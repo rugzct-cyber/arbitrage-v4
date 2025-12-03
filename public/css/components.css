@@ -49,38 +49,61 @@
     transform: translateY(0);
 }
 
-/* EXCHANGE TOGGLES */
+/* EXCHANGE TOGGLES (Style "Active Gold" V4) */
 .exchange-toggle {
     display: flex;
     align-items: center;
-    padding: 12px;
+    padding: 10px 14px;
     margin-bottom: 8px;
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.2s;
-    color: var(--text-muted);
-    font-size: 14px;
-    font-weight: 500;
-    border: 1px solid transparent;
-}
-
-.exchange-toggle:hover {
-    background: rgba(255, 255, 255, 0.03);
-    color: var(--text-main);
-    transform: translateX(4px);
-}
-
-.exchange-toggle.active {
-    background: linear-gradient(90deg, rgba(240, 230, 140, 0.05), transparent);
-    border-left: 3px solid var(--gold);
-    color: var(--text-main);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent; /* Bordure invisible par défaut */
+    color: var(--text-muted); /* Gris quand inactif */
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.03em;
 }
 
 .exchange-toggle img {
     width: 20px;
     height: 20px;
     margin-right: 12px;
-    object-fit: contain;
+    border-radius: 50%;
+    filter: grayscale(100%); /* Gris quand inactif */
+    transition: all 0.2s;
+    opacity: 0.7;
+}
+
+/* Effet de surbrillance au survol (Actif ou Inactif) */
+.exchange-toggle:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+}
+
+.exchange-toggle:hover img {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+/* --- ÉTAT ACTIF (SÉLECTIONNÉ) --- */
+.exchange-toggle.active {
+    background: rgba(240, 230, 140, 0.08); /* Fond doré très léger */
+    border-color: rgba(240, 230, 140, 0.4); /* Bordure dorée */
+    color: var(--gold); /* Texte doré */
+    box-shadow: 0 0 10px rgba(240, 230, 140, 0.05); /* Petit glow subtil */
+    border-left: 1px solid rgba(240, 230, 140, 0.4); /* Assure la cohérence */
+}
+
+.exchange-toggle.active img {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+/* Survol d'un élément déjà actif */
+.exchange-toggle.active:hover {
+    background: rgba(240, 230, 140, 0.15); /* Fond doré un peu plus fort */
+    border-color: var(--gold);
 }
 
 /* STAT CARDS */
