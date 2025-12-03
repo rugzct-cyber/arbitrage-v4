@@ -58,8 +58,10 @@
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid transparent; /* Bordure invisible par défaut */
-    color: var(--text-muted); /* Gris quand inactif */
+    border: 1px solid transparent;
+    /* Bordure invisible par défaut */
+    color: var(--text-muted);
+    /* Gris quand inactif */
     font-weight: 600;
     font-size: 13px;
     letter-spacing: 0.03em;
@@ -70,7 +72,8 @@
     height: 20px;
     margin-right: 12px;
     border-radius: 50%;
-    filter: grayscale(100%); /* Gris quand inactif */
+    filter: grayscale(100%);
+    /* Gris quand inactif */
     transition: all 0.2s;
     opacity: 0.7;
 }
@@ -88,11 +91,16 @@
 
 /* --- ÉTAT ACTIF (SÉLECTIONNÉ) --- */
 .exchange-toggle.active {
-    background: rgba(240, 230, 140, 0.08); /* Fond doré très léger */
-    border-color: rgba(240, 230, 140, 0.4); /* Bordure dorée */
-    color: var(--gold); /* Texte doré */
-    box-shadow: 0 0 10px rgba(240, 230, 140, 0.05); /* Petit glow subtil */
-    border-left: 1px solid rgba(240, 230, 140, 0.4); /* Assure la cohérence */
+    background: rgba(240, 230, 140, 0.08);
+    /* Fond doré très léger */
+    border-color: rgba(240, 230, 140, 0.4);
+    /* Bordure dorée */
+    color: var(--gold);
+    /* Texte doré */
+    box-shadow: 0 0 10px rgba(240, 230, 140, 0.05);
+    /* Petit glow subtil */
+    border-left: 1px solid rgba(240, 230, 140, 0.4);
+    /* Assure la cohérence */
 }
 
 .exchange-toggle.active img {
@@ -102,14 +110,15 @@
 
 /* Survol d'un élément déjà actif */
 .exchange-toggle.active:hover {
-    background: rgba(240, 230, 140, 0.15); /* Fond doré un peu plus fort */
+    background: rgba(240, 230, 140, 0.15);
+    /* Fond doré un peu plus fort */
     border-color: var(--gold);
 }
 
 /* STAT CARDS */
 .stat-card {
     background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--border);
+    border: none;
     border-radius: 8px;
     padding: 16px;
     text-align: center;
