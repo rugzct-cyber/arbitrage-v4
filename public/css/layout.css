@@ -35,9 +35,9 @@
 #sidebar {
     background: var(--bg-secondary);
     /* Couleur unie sombre */
-    border-right: 1px solid rgba(255, 255, 255, 0.03);
+    border-right: 2px solid rgba(255, 255, 255, 0);
     /* Bordure quasi invisible */
-    padding: 24px;
+    padding: 30px;
     overflow-y: auto;
     /* Pas de backdrop-filter ou d'ombres fortes pour rester discret */
 }

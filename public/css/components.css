@@ -58,7 +58,7 @@
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid transparent;
+    border: 0px solid transparent;
     /* Bordure invisible par défaut */
     color: var(--text-muted);
     /* Gris quand inactif */
@@ -99,7 +99,7 @@
     /* Texte doré */
     box-shadow: 0 0 10px rgba(240, 230, 140, 0.05);
     /* Petit glow subtil */
-    border-left: 1px solid rgba(240, 230, 140, 0.4);
+    border-left: 3.5px solid rgba(240, 230, 140, 0.4);
     /* Assure la cohérence */
 }
 

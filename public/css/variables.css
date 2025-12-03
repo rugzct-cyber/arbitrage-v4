@@ -3,19 +3,19 @@
     /* --- NOUVELLE PALETTE --- */
 
     /* Couleurs de Fond */
-    --bg-main: #030303;
+    --bg-main: #101011;
     /* Noir Profond (Fond du site) */
-    --bg-secondary: #0a0a0a;
+    --bg-secondary: #0b0b0e;
     /* Noir Olive (Sidebar, Header) */
-    --bg-panel: #161612;
+    --bg-panel: #10111486;
     /* Noir Olive (Tableaux, Cartes) */
-    --bg-card: rgba(22, 22, 18, 0.8);
+    --bg-card: rgba(18, 19, 22, 0.685);
     /* Variante transparente pour les cartes */
 
     /* Couleurs de Texte & Accents */
-    --text-main: #F5F8C2;
+    --text-main: #f5f8c2d3;
     /* Crème Doré (Couleur Lettre) */
-    --gold: #F5F8C2;
+    --gold: #f8f7c2cc;
     /* On aligne l'accent Gold sur la couleur lettre */
     --text-muted: #8a8a7b;
     /* Gris-Beige pour le texte secondaire (calculé pour aller avec) */
