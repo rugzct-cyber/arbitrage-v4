@@ -1,0 +1,16 @@
+/* --- ARBITRADE PREMIUM THEME (V1) --- */
+:root {
+    --bg-main: #050505;
+    --bg-secondary: #111111;
+    --bg-panel: #161616;
+    --gold: #F0E68C;
+    --text-main: #FFFFFF;
+    --text-muted: #A1A1AA;
+    --border: rgba(255, 255, 255, 0.08);
+    --green: #10B981;
+    --red: #EF4444;
+    --font-main: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap');

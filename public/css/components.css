@@ -1,0 +1,225 @@
+/* Reusable UI Components */
+
+/* TAB BUTTONS */
+.tab-button {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    padding: 8px 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 6px;
+    text-transform: uppercase;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.tab-button:hover {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.tab-button.active {
+    background: var(--gold);
+    color: #000;
+    border-color: var(--gold);
+    box-shadow: 0 0 15px rgba(240, 230, 140, 0.2);
+}
+
+/* REFRESH BUTTON */
+#btn-refresh {
+    background: var(--gold);
+    color: #000;
+    border: none;
+    padding: 8px 20px;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+}
+
+#btn-refresh:hover {
+    box-shadow: 0 0 15px rgba(240, 230, 140, 0.4);
+    transform: translateY(-1px);
+}
+
+#btn-refresh:active {
+    transform: translateY(0);
+}
+
+/* EXCHANGE TOGGLES */
+.exchange-toggle {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid transparent;
+}
+
+.exchange-toggle:hover {
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-main);
+    transform: translateX(4px);
+}
+
+.exchange-toggle.active {
+    background: linear-gradient(90deg, rgba(240, 230, 140, 0.05), transparent);
+    border-left: 3px solid var(--gold);
+    color: var(--text-main);
+}
+
+.exchange-toggle img {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    object-fit: contain;
+}
+
+/* STAT CARDS */
+.stat-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0.5;
+}
+
+.stat-label {
+    font-size: 10px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+}
+
+.stat-value.gold {
+    color: var(--gold);
+    text-shadow: 0 0 10px rgba(240, 230, 140, 0.2);
+}
+
+.stat-value.cyan {
+    color: #22d3ee;
+}
+
+/* FUNDING TOGGLES */
+.table-header-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.funding-toggles {
+    background: #000;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 4px;
+    display: flex;
+    gap: 4px;
+}
+
+.toggle-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    transition: all 0.2s;
+}
+
+.toggle-btn:hover {
+    color: #fff;
+}
+
+.toggle-btn.active {
+    background: #111;
+    color: var(--gold);
+    box-shadow: 0 0 10px rgba(240, 230, 140, 0.1);
+    border: 1px solid rgba(240, 230, 140, 0.2);
+}
+
+/* TOOLTIP */
+.has-tooltip {
+    position: relative;
+    cursor: pointer;
+}
+
+.has-tooltip:hover::after {
+    content: "Show Chart";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-secondary);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 4px 8px;
+    font-size: 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    pointer-events: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 8px;
+    z-index: 99;
+    opacity: 1;
+    transition: opacity 0.2s;
+}
+
+/* SKELETON LOADING */
+.skeleton {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.02) 25%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.02) 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 4px;
+    height: 20px;
+    width: 100%;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
