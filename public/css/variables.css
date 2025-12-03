@@ -1,44 +1,36 @@
 /* public/css/variables.css */
 :root {
-    /* --- COULEURS DE FOND (Profondeur) --- */
-    --bg-main: #0a0a0a;
-    /* Noir quasi pur */
-    --bg-secondary: #111111;
-    /* Sidebar */
-    --bg-panel: #161616;
-    /* Fond des tables */
-    --bg-card-hover: #1f1f1f;
-    /* Hover state plus clair */
+    /* --- PALETTE 1: ELECTRIC TECH --- */
 
-    /* --- TYPOGRAPHIE (Hierarchie) --- */
-    /* Le texte principal devient blanc cassé pour la lisibilité */
-    --text-main: #EAEAEA;
-    /* Le texte secondaire pour les labels */
-    --text-secondary: #888888;
-    /* Ton accent Khaki/Gold devient plus vibrant pour ressortir sur le gris */
-    --gold: #F0E68C;
-    --gold-dim: rgba(240, 230, 140, 0.15);
-    /* Pour les fonds subtils */
-    --gold-glow: rgba(240, 230, 140, 0.4);
-    /* Pour les effets néon */
+    /* Backgrounds */
+    --bg-main: #0B1120;
+    --bg-secondary: #111827;
+    --bg-panel: #1E293B;
+    --bg-card-hover: #334155;
 
-    /* --- BORDURES & STRUCTURE --- */
-    --border: rgba(255, 255, 255, 0.08);
-    --border-active: rgba(240, 230, 140, 0.3);
-    --radius-main: 12px;
-    --radius-sm: 6px;
+    /* Typography */
+    --text-main: #F1F5F9;
+    --text-secondary: #94A3B8;
+    --text-muted: #64748B;
 
-    /* --- TRADING COLORS (Ajustées pour être moins agressives) --- */
-    --green: #4ADE80;
-    /* Plus pastel/neon que le vert pur */
+    /* Accents (Cyan mapped to --gold variable) */
+    --gold: #06B6D4;
+    --gold-dim: rgba(6, 182, 212, 0.1);
+    --gold-glow: rgba(6, 182, 212, 0.4);
+
+    /* Borders */
+    --border: #334155;
+    --border-active: #06B6D4;
+
+    /* Status */
+    --green: #34D399;
     --red: #F87171;
-    /* Plus doux */
 
-    /* Fonts inchangées (Excellent choix Inter/JetBrains) */
+    /* Fonts (Unchanged) */
     --font-main: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
 
-    /* Couleurs Exchanges */
+    /* Exchanges (Unchanged) */
     --ex-paradex: #9D4EDD;
     --ex-vest: #10B981;
     --ex-extended: #00D9FF;
