@@ -5,7 +5,7 @@
 const adapters = {
     hyperliquid: require('../adapters/hyperliquid'),
     paradex: require('../adapters/paradex'),
-    // vest: require('../adapters/vest'),
+    vest: require('../adapters/vest'),
     extended: require('../adapters/extended'),
     lighter: require('../adapters/lighter'),
     hibachi: require('../adapters/hibachi'),
