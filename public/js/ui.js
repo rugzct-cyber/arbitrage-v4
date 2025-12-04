@@ -160,10 +160,12 @@ export function renderChart(row, container, isFunding, period) {
     gradient.addColorStop(0, 'rgba(6, 182, 212, 0.2)');
     gradient.addColorStop(1, 'rgba(6, 182, 212, 0)');
 
+    const labels = generateTimeLabels(period, history.length);
+
     state.chartInstance = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: Array.from({ length: history.length }, (_, i) => i),
+            labels: labels,
             datasets: [{
                 label: isFunding ? 'APR %' : 'Spread %',
                 data: history,
@@ -187,19 +189,53 @@ export function renderChart(row, container, isFunding, period) {
                     intersect: false,
                     backgroundColor: '#111',
                     titleColor: '#FFF',
-                    bodyColor: '#CCC',
                     borderColor: '#333',
                     borderWidth: 1,
                     bodyFont: { family: 'JetBrains Mono' }
                 }
             },
             scales: {
-                x: { display: false },
+                x: {
+                    display: true,
+                    grid: { display: false, drawBorder: false },
+                    ticks: {
+                        color: '#666',
+                        font: { family: 'JetBrains Mono', size: 10 },
+                        maxTicksLimit: period === '30D' ? 10 : (period === 'ALL' ? 12 : 24),
+                        maxRotation: 0,
+                        autoSkip: true
+                    }
+                },
                 y: { grid: { color: '#1A1A1A' }, ticks: { color: '#666', font: { family: 'JetBrains Mono' } } }
             },
             interaction: { mode: 'nearest', axis: 'x', intersect: false }
         }
     });
+}
+
+function generateTimeLabels(period, count) {
+    const labels = [];
+    const now = new Date();
+
+    for (let i = 0; i < count; i++) {
+        const d = new Date(now);
+        const offset = count - 1 - i;
+
+        if (period === '24H') {
+            d.setHours(d.getHours() - offset);
+            labels.push(d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }));
+        } else if (period === '7D') {
+            d.setDate(d.getDate() - offset);
+            labels.push(d.toLocaleDateString('en-US', { weekday: 'short' }));
+        } else if (period === '30D') {
+            d.setDate(d.getDate() - offset);
+            labels.push(d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' }));
+        } else { // ALL
+            d.setDate(d.getDate() - offset);
+            labels.push(d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' }));
+        }
+    }
+    return labels;
 }
 
 /**

@@ -64,10 +64,10 @@ export function generateHistory(currentVal, type, period = '30D') {
     let points = 30;
     let volatility = 1;
 
-    if (period === '24H') { points = 24; volatility = 0.5; }
-    if (period === '7D') { points = 7; volatility = 0.8; }
-    if (period === '30D') { points = 30; volatility = 1; }
-    if (period === 'ALL') { points = 90; volatility = 1.5; }
+    if (period === '24H') { points = 23; volatility = 0.5; } // Total 24 (23 + 1)
+    if (period === '7D') { points = 6; volatility = 0.8; }   // Total 7 (6 + 1)
+    if (period === '30D') { points = 29; volatility = 1; }   // Total 30 (29 + 1)
+    if (period === 'ALL') { points = 89; volatility = 1.5; } // Total 90 (89 + 1)
 
     const data = [];
     let val = currentVal || 0;
@@ -75,7 +75,7 @@ export function generateHistory(currentVal, type, period = '30D') {
     for (let i = 0; i < points; i++) {
         const noise = type === 'apr' ? (Math.random() - 0.5) * 10 * volatility : (Math.random() - 0.5) * 0.2 * volatility;
         val = val - noise;
-        if (type === 'price' && val < 0) val = 0;
+        // if (type === 'price' && val < 0) val = 0; // Removed to allow negative spreads
         data.unshift(val);
     }
     data.push(currentVal);
