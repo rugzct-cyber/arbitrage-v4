@@ -12,6 +12,7 @@ export const state = {
     activeTab: 'funding',
     sort: { column: 'metric', direction: 'desc' },
     fundingBasis: 'apy',
+    showAverage: false,
     chartInstance: null
 };
 
@@ -23,6 +24,7 @@ export function loadState() {
             state.selectedExchanges = prefs.selectedExchanges || state.selectedExchanges;
             state.activeTab = prefs.activeTab || state.activeTab;
             state.fundingBasis = prefs.fundingBasis || state.fundingBasis;
+            if (prefs.showAverage !== undefined) state.showAverage = prefs.showAverage;
             if (prefs.sort) state.sort = prefs.sort;
         } catch (e) {
             console.error("Error loading saved state:", e);
@@ -35,6 +37,7 @@ export function saveState() {
         selectedExchanges: state.selectedExchanges,
         activeTab: state.activeTab,
         fundingBasis: state.fundingBasis,
+        showAverage: state.showAverage,
         sort: state.sort
     };
     localStorage.setItem('arbitrade_prefs', JSON.stringify(prefs));
@@ -49,7 +52,10 @@ export function applyInitialState() {
     document.getElementById('price-view').style.display = state.activeTab === 'price' ? 'block' : 'none';
 
     // Restore funding toggle
-    document.querySelectorAll('.toggle-btn').forEach(btn => {
+    // Restore funding toggle
+    document.querySelectorAll('.toggle-btn[data-basis]').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.basis === state.fundingBasis);
     });
+    const avgBtn = document.getElementById('btn-toggle-avg');
+    if (avgBtn) avgBtn.classList.toggle('active', state.showAverage);
 }
