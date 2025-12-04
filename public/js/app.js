@@ -4,7 +4,7 @@
  */
 
 import { loadState, applyInitialState } from './state.js';
-import { initTabs, initSidebar, initSorting, initFundingToggles } from './ui.js';
+import { initTabs, initSidebar, initSorting, initFundingToggles, initTableEvents } from './ui.js';
 import { refreshAllData } from './api.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSidebar();
     initSorting();
     initFundingToggles();
+    initTableEvents(); // Event delegation for table clicks
     applyInitialState();
     refreshAllData();
     document.getElementById('btn-refresh').addEventListener('click', refreshAllData);

@@ -1,11 +1,15 @@
 /**
- * UI Rendering and DOM Manipulation 
+ * UI Rendering and DOM Manipulation - PERFORMANCE OPTIMIZED
+ * Features: Event Delegation, Smart DOM Diffing, Skeleton Cleanup
  */
 
 import { EXCHANGES } from './config.js';
 import { state, saveState } from './state.js';
 import { getSortedData, generateHistory, calculateStats, processData } from './logic.js';
 import { openExchange, formatElastic } from './utils.js';
+
+// Store row data for event delegation
+const rowDataCache = new Map();
 
 /**
  * Renders skeleton loading rows
@@ -16,6 +20,7 @@ export function renderSkeleton() {
     tbody.innerHTML = '';
     for (let i = 0; i < 10; i++) {
         const tr = document.createElement('tr');
+        tr.className = 'skeleton-row'; // Mark as skeleton for cleanup
         tr.innerHTML = `
             <td><div class="skeleton" style="width: 60px;"></div></td>
             <td><div class="skeleton" style="width: 80px;"></div></td>
@@ -27,14 +32,13 @@ export function renderSkeleton() {
 }
 
 /**
- * Renders the main table view
+ * SMART RENDER - Updates existing rows, creates new ones, removes stale ones
  */
 export function renderCurrentView() {
     const isFunding = state.activeTab === 'funding';
     const data = getSortedData(isFunding ? state.fundingData : state.priceData);
     const tbody = document.getElementById(isFunding ? 'funding-table-body' : 'price-table-body');
     if (!tbody) return;
-    tbody.innerHTML = '';
 
     // Update Header Styles
     const tableId = isFunding ? 'funding-table' : 'price-table';
@@ -53,51 +57,161 @@ export function renderCurrentView() {
         }
     }
 
-    // Use DocumentFragment for single DOM reflow
-    const fragment = document.createDocumentFragment();
+    // Track valid IDs for cleanup
+    const validIds = new Set();
     const colSpan = 3 + EXCHANGES.length;
+    const prefix = isFunding ? 'funding' : 'price';
 
-    data.forEach(row => {
-        const tr = document.createElement('tr');
+    // STEP 2: Update/Create rows
+    data.forEach((row, index) => {
+        const rowId = `row-${prefix}-${row.pair}`;
+        const chartId = `chart-${prefix}-${row.pair}`;
+        validIds.add(rowId);
+        validIds.add(chartId);
+
+        // Cache row data for event delegation
+        rowDataCache.set(rowId, { row, isFunding });
+
         const metricLabel = `${formatElastic(row.metric, isFunding ? 'apr' : 'price')}%`;
         const metricClass = (isFunding && row.metric < 0) ? 'text-short' : '';
 
-        tr.innerHTML = `
-            <td class="col-pair has-tooltip">${row.pair}</td>
-            <td class="col-metric ${metricClass} has-tooltip">${metricLabel}</td>
-            <td class="col-strategy">
-                <div class="strategy-cell">
-                    <div class="strategy-line"><span class="strategy-label">LONG</span><span class="strategy-val" onclick="window.openExchangeGlobal('${row.strategy?.long}')">${row.strategy?.long || '-'}</span></div>
-                    <div class="strategy-line"><span class="strategy-label">SHORT</span><span class="strategy-val" onclick="window.openExchangeGlobal('${row.strategy?.short}')">${row.strategy?.short || '-'}</span></div>
-                </div>
-            </td>
-        `;
+        let tr = document.getElementById(rowId);
 
-        EXCHANGES.forEach(ex => {
-            const val = row.exchanges[ex];
-            const td = document.createElement('td');
-            const isValid = val !== undefined && val !== null;
-            td.innerHTML = isValid ? `<span class="exchange-val">${isFunding ? `${formatElastic(val, 'apr')}%` : `$${formatElastic(val, 'price')}`}</span>` : '<span style="opacity:0.2">-</span>';
-            if (isValid) {
-                td.style.cursor = "pointer";
-                td.onclick = (e) => { e.stopPropagation(); openExchange(ex); };
+        if (tr) {
+            // ROW EXISTS - Update only changed cells
+            const cells = tr.cells;
+
+            // Cell 0: Pair
+            if (cells[0].textContent !== row.pair) cells[0].textContent = row.pair;
+
+            // Cell 1: Metric
+            if (cells[1].textContent !== metricLabel) {
+                cells[1].textContent = metricLabel;
+                cells[1].className = `col-metric ${metricClass} has-tooltip`;
             }
-            tr.appendChild(td);
-        });
 
-        tr.onclick = () => toggleDetails(row, tr, isFunding);
-        fragment.appendChild(tr);
+            // Cell 2: Strategy - update spans
+            const longSpan = cells[2].querySelector('.strategy-line:first-child .strategy-val');
+            const shortSpan = cells[2].querySelector('.strategy-line:last-child .strategy-val');
+            if (longSpan) {
+                const longVal = row.strategy?.long || '-';
+                if (longSpan.textContent !== longVal) {
+                    longSpan.textContent = longVal;
+                    longSpan.dataset.exchange = row.strategy?.long || '';
+                }
+            }
+            if (shortSpan) {
+                const shortVal = row.strategy?.short || '-';
+                if (shortSpan.textContent !== shortVal) {
+                    shortSpan.textContent = shortVal;
+                    shortSpan.dataset.exchange = row.strategy?.short || '';
+                }
+            }
 
-        const chartTr = document.createElement('tr');
-        chartTr.className = 'chart-row';
-        chartTr.id = `chart-${isFunding ? 'funding' : 'price'}-${row.pair}`;
-        chartTr.innerHTML = `<td colspan="${colSpan}"><div class="inline-chart-container"></div></td>`;
-        fragment.appendChild(chartTr);
+            // Cells 3+: Exchange values
+            EXCHANGES.forEach((ex, i) => {
+                const cell = cells[3 + i];
+                if (!cell) return;
+                const val = row.exchanges[ex];
+                const isValid = val !== undefined && val !== null;
+                const newText = isValid ? (isFunding ? `${formatElastic(val, 'apr')}%` : `$${formatElastic(val, 'price')}`) : '-';
+                const span = cell.querySelector('span');
+                if (span && span.textContent !== newText) {
+                    span.textContent = newText;
+                    span.style.opacity = isValid ? '' : '0.2';
+                    span.className = isValid ? 'exchange-val' : '';
+                }
+                cell.dataset.exchange = isValid ? ex : '';
+                cell.style.cursor = isValid ? 'pointer' : '';
+            });
+        } else {
+            // ROW DOESN'T EXIST - Create new
+            tr = document.createElement('tr');
+            tr.id = rowId;
+            tr.dataset.pair = row.pair;
+            tr.innerHTML = `
+                <td class="col-pair has-tooltip">${row.pair}</td>
+                <td class="col-metric ${metricClass} has-tooltip">${metricLabel}</td>
+                <td class="col-strategy">
+                    <div class="strategy-cell">
+                        <div class="strategy-line"><span class="strategy-label">LONG</span><span class="strategy-val" data-exchange="${row.strategy?.long || ''}">${row.strategy?.long || '-'}</span></div>
+                        <div class="strategy-line"><span class="strategy-label">SHORT</span><span class="strategy-val" data-exchange="${row.strategy?.short || ''}">${row.strategy?.short || '-'}</span></div>
+                    </div>
+                </td>
+                ${EXCHANGES.map(ex => {
+                const val = row.exchanges[ex];
+                const isValid = val !== undefined && val !== null;
+                return `<td data-exchange="${isValid ? ex : ''}" style="cursor:${isValid ? 'pointer' : ''}"><span class="${isValid ? 'exchange-val' : ''}" style="${isValid ? '' : 'opacity:0.2'}">${isValid ? (isFunding ? `${formatElastic(val, 'apr')}%` : `$${formatElastic(val, 'price')}`) : '-'}</span></td>`;
+            }).join('')}
+            `;
+            tbody.appendChild(tr);
+
+            // Create chart row
+            const chartTr = document.createElement('tr');
+            chartTr.className = 'chart-row';
+            chartTr.id = chartId;
+            chartTr.innerHTML = `<td colspan="${colSpan}"><div class="inline-chart-container"></div></td>`;
+            tbody.appendChild(chartTr);
+        }
     });
 
-    // Single DOM insert - triggers only ONE reflow
-    tbody.appendChild(fragment);
+    // STEP 3: CLEANUP - Remove stale rows (skeletons, old pairs)
+    const allRows = Array.from(tbody.children);
+    allRows.forEach(row => {
+        // Remove skeletons
+        if (row.classList.contains('skeleton-row')) {
+            row.remove();
+            return;
+        }
+        // Remove rows not in current data
+        if (row.id && !validIds.has(row.id)) {
+            row.remove();
+        }
+    });
+
     updateVisibility();
+}
+
+/**
+ * Initialize Table Event Delegation - ONE listener per table
+ */
+export function initTableEvents() {
+    ['funding-table-body', 'price-table-body'].forEach(tbodyId => {
+        const tbody = document.getElementById(tbodyId);
+        if (!tbody) return;
+
+        tbody.addEventListener('click', (e) => {
+            const target = e.target;
+
+            // Check: Strategy value click
+            if (target.classList.contains('strategy-val')) {
+                const exchange = target.dataset.exchange;
+                if (exchange) {
+                    e.stopPropagation();
+                    openExchange(exchange);
+                }
+                return;
+            }
+
+            // Check: Exchange cell click (td with data-exchange)
+            const td = target.closest('td[data-exchange]');
+            if (td && td.dataset.exchange) {
+                e.stopPropagation();
+                openExchange(td.dataset.exchange);
+                return;
+            }
+
+            // Check: Row click (for chart toggle)
+            const tr = target.closest('tr[data-pair]');
+            if (tr) {
+                const rowId = tr.id;
+                const cached = rowDataCache.get(rowId);
+                if (cached) {
+                    toggleDetails(cached.row, tr, cached.isFunding);
+                }
+            }
+        });
+    });
 }
 
 /**
@@ -256,12 +370,12 @@ export function updateVisibility() {
         EXCHANGES.forEach((ex, idx) => {
             const colIdx = idx + 3;
             const visible = state.selectedExchanges[ex];
-            if (table.rows[0].cells[colIdx]) table.rows[0].cells[colIdx].style.display = visible ? '' : 'none';
+            if (table.rows[0]?.cells[colIdx]) table.rows[0].cells[colIdx].style.display = visible ? '' : 'none';
             Array.from(table.querySelectorAll('tbody tr')).forEach(tr => {
                 if (tr.cells[colIdx]) tr.cells[colIdx].style.display = visible ? '' : 'none';
                 if (tr.classList.contains('chart-row')) {
                     const visibleCount = Object.values(state.selectedExchanges).filter(Boolean).length;
-                    tr.cells[0].colSpan = 3 + visibleCount;
+                    if (tr.cells[0]) tr.cells[0].colSpan = 3 + visibleCount;
                 }
             });
         });
@@ -333,7 +447,6 @@ export function initFundingToggles() {
             state.showAverage = !state.showAverage;
             avgBtn.classList.toggle('active', state.showAverage);
 
-            // Toggle selector visibility and disable basis buttons
             if (avgSelector) avgSelector.style.display = state.showAverage ? 'flex' : 'none';
             basisBtns.forEach(btn => btn.classList.toggle('disabled', state.showAverage));
 
@@ -345,7 +458,6 @@ export function initFundingToggles() {
         };
     }
 
-    // Init period selector buttons
     if (avgSelector) {
         avgSelector.querySelectorAll('.toggle-btn').forEach(btn => {
             btn.onclick = () => {
@@ -410,5 +522,5 @@ export function updateLastUpdate() {
     if (el) el.textContent = `UPDATED: ${new Date().toLocaleTimeString()}`;
 }
 
-// Make openExchange available globally for inline onclick handlers
+// Make openExchange available globally for backward compatibility
 window.openExchangeGlobal = openExchange;
