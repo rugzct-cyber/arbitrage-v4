@@ -57,7 +57,14 @@
                         <button class="toggle-btn" data-basis="1h">1H</button>
                         <button class="toggle-btn" data-basis="8h">8H</button>
                         <button class="toggle-btn active" data-basis="apy">APY</button>
-                        <button id="btn-toggle-avg" class="toggle-btn" title="Sort by 30D Average">AVG</button>
+                        <button id="btn-toggle-avg" class="toggle-btn" title="Sort by Average">AVG</button>
+                        <div id="avg-period-selector"
+                            style="display:none; gap:4px; margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--border);">
+                            <button class="toggle-btn" data-period="24H">24H</button>
+                            <button class="toggle-btn" data-period="7D">7D</button>
+                            <button class="toggle-btn active" data-period="30D">30D</button>
+                            <button class="toggle-btn" data-period="ALL">ALL</button>
+                        </div>
                     </div>
                 </div>
                 <div class="table-container">

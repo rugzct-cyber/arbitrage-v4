@@ -284,3 +284,11 @@
         background-position: -200% 0;
     }
 }
+
+/* DISABLED STATE */
+.toggle-btn.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+    cursor: not-allowed;
+    filter: grayscale(100%);
+}

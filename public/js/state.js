@@ -13,6 +13,7 @@ export const state = {
     sort: { column: 'metric', direction: 'desc' },
     fundingBasis: 'apy',
     showAverage: false,
+    averagePeriod: '30D',
     chartInstance: null
 };
 
@@ -25,6 +26,7 @@ export function loadState() {
             state.activeTab = prefs.activeTab || state.activeTab;
             state.fundingBasis = prefs.fundingBasis || state.fundingBasis;
             if (prefs.showAverage !== undefined) state.showAverage = prefs.showAverage;
+            if (prefs.averagePeriod) state.averagePeriod = prefs.averagePeriod;
             if (prefs.sort) state.sort = prefs.sort;
         } catch (e) {
             console.error("Error loading saved state:", e);
@@ -38,6 +40,7 @@ export function saveState() {
         activeTab: state.activeTab,
         fundingBasis: state.fundingBasis,
         showAverage: state.showAverage,
+        averagePeriod: state.averagePeriod,
         sort: state.sort
     };
     localStorage.setItem('arbitrade_prefs', JSON.stringify(prefs));
@@ -57,5 +60,18 @@ export function applyInitialState() {
         btn.classList.toggle('active', btn.dataset.basis === state.fundingBasis);
     });
     const avgBtn = document.getElementById('btn-toggle-avg');
+    const avgSelector = document.getElementById('avg-period-selector');
+
     if (avgBtn) avgBtn.classList.toggle('active', state.showAverage);
+    if (avgSelector) {
+        avgSelector.style.display = state.showAverage ? 'flex' : 'none';
+        avgSelector.querySelectorAll('.toggle-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.period === state.averagePeriod);
+        });
+    }
+
+    // Disable basis buttons if average is shown
+    if (state.showAverage) {
+        document.querySelectorAll('.toggle-btn[data-basis]').forEach(btn => btn.classList.add('disabled'));
+    }
 }

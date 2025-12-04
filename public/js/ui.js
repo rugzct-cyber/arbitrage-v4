@@ -41,7 +41,8 @@ export function renderCurrentView() {
     const thead = document.getElementById(tableId)?.querySelector('thead');
     if (thead) {
         if (isFunding) {
-            thead.rows[0].cells[1].textContent = state.showAverage ? 'AVG APR (30D)' : (state.fundingBasis === 'apy' ? 'APY' : 'APR');
+            const period = state.averagePeriod || '30D';
+            thead.rows[0].cells[1].textContent = state.showAverage ? `AVG APR (${period})` : (state.fundingBasis === 'apy' ? 'APY' : 'APR');
         }
         Array.from(thead.rows[0].cells).forEach(cell => cell.style.color = '');
         if (state.sort.column === 'pair') thead.rows[0].cells[0].style.color = '#F0E68C';
@@ -281,16 +282,40 @@ export function initFundingToggles() {
     });
 
     const avgBtn = document.getElementById('btn-toggle-avg');
+    const avgSelector = document.getElementById('avg-period-selector');
+    const basisBtns = document.querySelectorAll('.toggle-btn[data-basis]');
+
     if (avgBtn) {
         avgBtn.onclick = () => {
             state.showAverage = !state.showAverage;
             avgBtn.classList.toggle('active', state.showAverage);
+
+            // Toggle selector visibility and disable basis buttons
+            if (avgSelector) avgSelector.style.display = state.showAverage ? 'flex' : 'none';
+            basisBtns.forEach(btn => btn.classList.toggle('disabled', state.showAverage));
+
             saveState();
             if (state.rawFundingData.length > 0) {
                 state.fundingData = processData(state.rawFundingData, 'apr');
                 renderCurrentView();
             }
         };
+    }
+
+    // Init period selector buttons
+    if (avgSelector) {
+        avgSelector.querySelectorAll('.toggle-btn').forEach(btn => {
+            btn.onclick = () => {
+                avgSelector.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                state.averagePeriod = btn.dataset.period;
+                saveState();
+                if (state.rawFundingData.length > 0) {
+                    state.fundingData = processData(state.rawFundingData, 'apr');
+                    renderCurrentView();
+                }
+            };
+        });
     }
 }
 

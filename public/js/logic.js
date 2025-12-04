@@ -21,7 +21,7 @@ export function processData(rawData, metricKey) {
 
         if (metricKey === 'apr') {
             if (state.showAverage) {
-                const history = generateHistory(item.apr, 'apr', '30D');
+                const history = generateHistory(item.apr, 'apr', state.averagePeriod || '30D');
                 const stats = calculateStats(history);
                 val = stats.avg;
             } else {
