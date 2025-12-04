@@ -11,7 +11,7 @@ module.exports = {
             const ctx = assetCtxs[index];
             return {
                 exchange: "hyperliquid",
-                pair: `${asset.name}-PERP`,
+                pair: asset.name,
                 price: parseFloat(ctx.markPx),
                 fundingRate: parseFloat(ctx.funding),
                 apr: parseFloat(ctx.funding) * 24 * 365 * 100

@@ -5,7 +5,7 @@
 import { EXCHANGES } from './config.js';
 import { state, saveState } from './state.js';
 import { getSortedData, generateHistory, calculateStats, processData } from './logic.js';
-import { openExchange } from './utils.js';
+import { openExchange, formatElastic } from './utils.js';
 
 /**
  * Renders skeleton loading rows
@@ -55,7 +55,7 @@ export function renderCurrentView() {
 
     data.forEach(row => {
         const tr = document.createElement('tr');
-        const metricLabel = `${(row.metric || 0).toFixed(2)}%`;
+        const metricLabel = `${formatElastic(row.metric, isFunding ? 'apr' : 'price')}%`;
         const metricClass = (isFunding && row.metric < 0) ? 'text-short' : '';
 
         tr.innerHTML = `
@@ -73,7 +73,7 @@ export function renderCurrentView() {
             const val = row.exchanges[ex];
             const td = document.createElement('td');
             const isValid = val !== undefined && val !== null;
-            td.innerHTML = isValid ? `<span class="exchange-val">${isFunding ? `${Number(val).toFixed(2)}%` : `$${Number(val).toLocaleString()}`}</span>` : '<span style="opacity:0.2">-</span>';
+            td.innerHTML = isValid ? `<span class="exchange-val">${isFunding ? `${formatElastic(val, 'apr')}%` : `$${formatElastic(val, 'price')}`}</span>` : '<span style="opacity:0.2">-</span>';
             if (isValid) {
                 td.style.cursor = "pointer";
                 td.onclick = (e) => { e.stopPropagation(); openExchange(ex); };
@@ -135,10 +135,10 @@ export function renderChart(row, container, isFunding, period) {
         </div>
     </div>
     <div class="inline-stats">
-        <div class="stat-card"><div class="stat-label">CURRENT</div><div class="stat-value gold">${(row.metric || 0).toFixed(2)}%</div></div>
-        <div class="stat-card"><div class="stat-label">${lblAvg}</div><div class="stat-value">${stats.avg.toFixed(2)}%</div></div>
-        <div class="stat-card"><div class="stat-label">${lblMax}</div><div class="stat-value cyan">${stats.max.toFixed(2)}%</div></div>
-        <div class="stat-card"><div class="stat-label">${lblMin}</div><div class="stat-value">${stats.min.toFixed(2)}%</div></div>
+        <div class="stat-card"><div class="stat-label">CURRENT</div><div class="stat-value gold">${formatElastic(row.metric, type)}%</div></div>
+        <div class="stat-card"><div class="stat-label">${lblAvg}</div><div class="stat-value">${formatElastic(stats.avg, type)}%</div></div>
+        <div class="stat-card"><div class="stat-label">${lblMax}</div><div class="stat-value cyan">${formatElastic(stats.max, type)}%</div></div>
+        <div class="stat-card"><div class="stat-label">${lblMin}</div><div class="stat-value">${formatElastic(stats.min, type)}%</div></div>
     </div>
     <div class="chart-wrapper"><canvas></canvas></div>
     `;
