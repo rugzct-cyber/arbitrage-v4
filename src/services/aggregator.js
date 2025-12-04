@@ -9,8 +9,8 @@ const adapters = {
     extended: require('../adapters/extended'),
     lighter: require('../adapters/lighter'),
     // hibachi: require('../adapters/hibachi'),
-    // aster: require('../adapters/aster'),
-    // pacifica: require('../adapters/pacifica'),
+    aster: require('../adapters/aster'),
+    pacifica: require('../adapters/pacifica'),
     // variational: require('../adapters/variational')
 };
 
