@@ -48,51 +48,67 @@
                 <button class="exchange-toggle" data-exchange="variational"><img src="assets/logos/variational.png"
                         alt="Variational">Variational</button>
             </div>
-            <th>Pair</th>
-            <th>APR</th>
-            <th>Strategy</th>
-            <th data-exchange="paradex">Paradex</th>
-            <th data-exchange="vest">Vest</th>
-            <th data-exchange="extended">Extended</th>
-            <th data-exchange="hyperliquid">Hyperliquid</th>
-            <th data-exchange="lighter">Lighter</th>
-            <th data-exchange="hibachi">Hibachi</th>
-            <th data-exchange="aster">Aster</th>
-            <th data-exchange="pacifica">Pacifica</th>
-            <th data-exchange="variational">Variational</th>
-            </tr>
-            </thead>
-            <tbody id="funding-table-body"></tbody>
-            </table>
-    </div>
-    <div id="funding-details-panel"></div>
-    </section>
-    <section id="price-view" class="hidden">
-        <h2 class="section-title">Price Arbitrage</h2>
-        <div class="table-container">
-            <table id="price-table">
-                <thead>
-                    <tr>
-                        <th>Pair</th>
-                        <th>Spread</th>
-                        <th>Strategy</th>
-                        <th data-exchange="paradex">Paradex</th>
-                        <th data-exchange="vest">Vest</th>
-                        <th data-exchange="extended">Extended</th>
-                        <th data-exchange="hyperliquid">Hyperliquid</th>
-                        <th data-exchange="lighter">Lighter</th>
-                        <th data-exchange="hibachi">Hibachi</th>
-                        <th data-exchange="aster">Aster</th>
-                        <th data-exchange="pacifica">Pacifica</th>
-                        <th data-exchange="variational">Variational</th>
-                    </tr>
-                </thead>
-                <tbody id="price-table-body"></tbody>
-            </table>
-        </div>
-        <div id="price-details-panel"></div>
-    </section>
-    </main>
+        </aside>
+        <main id="main-content">
+            <section id="funding-view">
+                <div class="table-header-controls">
+                    <h2 class="section-title">Funding Opportunities</h2>
+                    <div class="funding-toggles">
+                        <button class="toggle-btn" data-basis="1h">1H</button>
+                        <button class="toggle-btn" data-basis="8h">8H</button>
+                        <button class="toggle-btn active" data-basis="apy">APY</button>
+                        <button id="btn-toggle-avg" class="toggle-btn" title="Sort by 30D Average">AVG</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="funding-table">
+                        <thead>
+                            <tr>
+                                <th>Pair</th>
+                                <th>APR</th>
+                                <th>Strategy</th>
+                                <th data-exchange="paradex">Paradex</th>
+                                <th data-exchange="vest">Vest</th>
+                                <th data-exchange="extended">Extended</th>
+                                <th data-exchange="hyperliquid">Hyperliquid</th>
+                                <th data-exchange="lighter">Lighter</th>
+                                <th data-exchange="hibachi">Hibachi</th>
+                                <th data-exchange="aster">Aster</th>
+                                <th data-exchange="pacifica">Pacifica</th>
+                                <th data-exchange="variational">Variational</th>
+                            </tr>
+                        </thead>
+                        <tbody id="funding-table-body"></tbody>
+                    </table>
+                </div>
+                <div id="funding-details-panel"></div>
+            </section>
+            <section id="price-view" class="hidden">
+                <h2 class="section-title">Price Arbitrage</h2>
+                <div class="table-container">
+                    <table id="price-table">
+                        <thead>
+                            <tr>
+                                <th>Pair</th>
+                                <th>Spread</th>
+                                <th>Strategy</th>
+                                <th data-exchange="paradex">Paradex</th>
+                                <th data-exchange="vest">Vest</th>
+                                <th data-exchange="extended">Extended</th>
+                                <th data-exchange="hyperliquid">Hyperliquid</th>
+                                <th data-exchange="lighter">Lighter</th>
+                                <th data-exchange="hibachi">Hibachi</th>
+                                <th data-exchange="aster">Aster</th>
+                                <th data-exchange="pacifica">Pacifica</th>
+                                <th data-exchange="variational">Variational</th>
+                            </tr>
+                        </thead>
+                        <tbody id="price-table-body"></tbody>
+                    </table>
+                </div>
+                <div id="price-details-panel"></div>
+            </section>
+        </main>
     </div>
     <script type="module" src="js/app.js"></script>
 </body>
