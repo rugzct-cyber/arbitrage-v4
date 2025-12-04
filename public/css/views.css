@@ -1,20 +1,16 @@
-/* public/css/views.css */
+/* public/css/views.css - ZERO LATENCY MODE */
 
 /* TABLE CONTAINER */
 .table-container {
     background: transparent;
-    /* On enlève le fond du conteneur pour laisser respirer */
     border: none;
-    box-shadow: none;
     margin-top: 20px;
 }
 
 table {
     width: 100%;
     border-collapse: separate;
-    /* CRUCIAL pour l'espacement entre les lignes */
     border-spacing: 0 8px;
-    /* Espace vertical entre les lignes */
 }
 
 /* HEADER */
@@ -37,10 +33,10 @@ td:not(:first-child) {
     text-align: right;
 }
 
-/* ROW DESIGN (CARD STYLE) */
+/* ROW DESIGN (CARD STYLE) - ZERO LATENCY */
 tbody tr {
     background: var(--bg-panel);
-    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: none !important;
     cursor: pointer;
 }
 
@@ -49,10 +45,10 @@ tbody tr td {
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
     background: var(--bg-panel);
-    /* Nécessaire pour l'effet */
     color: var(--text-main);
     font-family: var(--font-mono);
     font-size: 13px;
+    transition: none !important;
 }
 
 /* Arrondir les extrémités de la ligne */
@@ -68,29 +64,23 @@ tbody tr td:last-child {
     border-right: 1px solid var(--border);
 }
 
-/* HOVER EFFECT */
+/* HOVER EFFECT - INSTANT */
 tbody tr:hover td {
     background: var(--bg-card-hover);
     border-color: rgba(255, 255, 255, 0.15);
-    transform: translateY(-1px);
-    /* Micro-levitation */
 }
 
-/* ACTIVE/SELECTED ROW */
+/* ACTIVE/SELECTED ROW - INSTANT */
 tbody tr.selected-row td {
-    background: rgba(6, 182, 212, 0.05) !important;
+    background: rgba(6, 182, 212, 0.08) !important;
     border-color: var(--border-active);
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
-    /* Profondeur intérieure */
 }
 
 /* TYPOGRAPHIE DANS LE TABLEAU */
 .col-pair {
     color: #fff;
-    /* Le nom de la paire doit être très blanc */
     font-weight: 700;
     font-family: var(--font-main);
-    /* Pas de mono pour le nom, plus élégant */
     text-align: left !important;
 }
 
@@ -99,7 +89,6 @@ tbody tr.selected-row td {
     font-weight: 700;
     color: var(--gold);
     text-shadow: 0 0 10px rgba(6, 182, 212, 0.25);
-    /* Petit glow sur le profit */
 }
 
 /* CHART ROW INTEGRATION */
@@ -113,7 +102,6 @@ tbody tr.selected-row td {
 
 .chart-row td {
     background: #050505 !important;
-    /* Fond plus sombre pour le graph */
     border: 1px solid var(--border);
     border-top: none;
     border-radius: 0 0 var(--radius-main) var(--radius-main) !important;
@@ -165,7 +153,7 @@ tbody tr.selected-row td {
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    transition: 0.2s;
+    transition: none !important;
 }
 
 .inline-close:hover {
@@ -208,7 +196,7 @@ tbody tr.selected-row td {
     border-radius: 4px;
     font-weight: 600;
     font-family: var(--font-mono);
-    transition: 0.2s;
+    transition: none !important;
 }
 
 .time-btn:hover {
@@ -220,5 +208,4 @@ tbody tr.selected-row td {
     border-color: var(--gold);
     color: var(--gold);
     background: rgba(6, 182, 212, 0.05);
-    box-shadow: 0 0 10px rgba(6, 182, 212, 0.1);
 }

@@ -7,9 +7,11 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 32px;
-    background: rgba(5, 5, 5, 0.95);
+    background: #050505;
+    /* Solid color for GPU performance */
     border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(10px);
+    /* backdrop-filter: blur(10px); */
+    /* Disabled for performance */
 }
 
 #logo {

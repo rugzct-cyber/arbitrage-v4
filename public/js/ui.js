@@ -53,6 +53,10 @@ export function renderCurrentView() {
         }
     }
 
+    // Use DocumentFragment for single DOM reflow
+    const fragment = document.createDocumentFragment();
+    const colSpan = 3 + EXCHANGES.length;
+
     data.forEach(row => {
         const tr = document.createElement('tr');
         const metricLabel = `${formatElastic(row.metric, isFunding ? 'apr' : 'price')}%`;
@@ -82,14 +86,17 @@ export function renderCurrentView() {
         });
 
         tr.onclick = () => toggleDetails(row, tr, isFunding);
-        tbody.appendChild(tr);
+        fragment.appendChild(tr);
 
         const chartTr = document.createElement('tr');
         chartTr.className = 'chart-row';
         chartTr.id = `chart-${isFunding ? 'funding' : 'price'}-${row.pair}`;
-        chartTr.innerHTML = `<td colspan="${3 + EXCHANGES.length}"><div class="inline-chart-container"></div></td>`;
-        tbody.appendChild(chartTr);
+        chartTr.innerHTML = `<td colspan="${colSpan}"><div class="inline-chart-container"></div></td>`;
+        fragment.appendChild(chartTr);
     });
+
+    // Single DOM insert - triggers only ONE reflow
+    tbody.appendChild(fragment);
     updateVisibility();
 }
 
