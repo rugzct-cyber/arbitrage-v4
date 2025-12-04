@@ -8,7 +8,7 @@ const adapters = {
     // vest: require('../adapters/vest'),
     extended: require('../adapters/extended'),
     lighter: require('../adapters/lighter'),
-    // hibachi: require('../adapters/hibachi'),
+    hibachi: require('../adapters/hibachi'),
     aster: require('../adapters/aster'),
     pacifica: require('../adapters/pacifica'),
     // variational: require('../adapters/variational')
