@@ -10,6 +10,44 @@ import { formatElastic } from '../utils.js';
 import { rowDataCache } from './events.js';
 
 /**
+ * Color interpolation for metric gradient (Gold -> White)
+ */
+// GOLD_RGB: #3C82F6 -> (60, 130, 246) - Blue theme
+const GOLD_RGB = [60, 130, 246];
+// WHITE_RGB: #EDEDED -> (237, 237, 237)
+const WHITE_RGB = [237, 237, 237];
+
+function interpolateColor(rgb1, rgb2, factor) {
+    const result = rgb1.slice();
+    for (let i = 0; i < 3; i++) {
+        result[i] = Math.round(rgb1[i] + factor * (rgb2[i] - rgb1[i]));
+    }
+    return `rgb(${result.join(', ')})`;
+}
+
+function calculateMetricColor(row, index, totalLength) {
+    const maxInterpolationIndex = 17; // Gradient up to line 18
+    const maxIndexToUse = Math.min(totalLength - 1, maxInterpolationIndex);
+
+    // Beyond 18th row: white, no shadow
+    if (index > maxInterpolationIndex) {
+        return { color: `rgb(${WHITE_RGB.join(', ')})`, shadow: '' };
+    }
+
+    // Factor: 0 (index 0 = blue) to 1 (index 17 = white)
+    const factor = index / maxIndexToUse;
+    const color = interpolateColor(GOLD_RGB, WHITE_RGB, factor);
+
+    // Shadow fades with color
+    const shadowOpacity = 0.25 * (1 - factor);
+    const shadow = shadowOpacity > 0.01
+        ? `0 0 10px rgba(60, 130, 246, ${shadowOpacity.toFixed(2)})`
+        : '';
+
+    return { color, shadow };
+}
+
+/**
  * Renders skeleton loading rows
  */
 export function renderSkeleton() {
@@ -92,6 +130,10 @@ export function renderCurrentView() {
         // Cache row data for event delegation
         rowDataCache.set(rowId, { row, isFunding });
 
+        // GRADIENT COLOR for metric
+        const { color: metricColor, shadow: metricShadow } = calculateMetricColor(row, index, data.length);
+        const metricStyle = `style="color: ${metricColor}; text-shadow: ${metricShadow};"`;
+
         const metricLabel = `${formatElastic(row.metric, isFunding ? 'apr' : 'price')}%`;
         const metricClass = (isFunding && row.metric < 0) ? 'text-short' : '';
 
@@ -109,6 +151,9 @@ export function renderCurrentView() {
                 cells[1].textContent = metricLabel;
                 cells[1].className = `col-metric ${metricClass} has-tooltip`;
             }
+            // Apply gradient color
+            cells[1].style.color = metricColor;
+            cells[1].style.textShadow = metricShadow;
 
             // Cell 2: Strategy - update spans
             const longSpan = cells[2].querySelector('.strategy-line:first-child .strategy-val');
@@ -157,7 +202,7 @@ export function renderCurrentView() {
             tr.dataset.pair = row.pair;
             tr.innerHTML = `
                 <td class="col-pair has-tooltip">${row.pair}</td>
-                <td class="col-metric ${metricClass} has-tooltip">${metricLabel}</td>
+                <td class="col-metric ${metricClass} has-tooltip" ${metricStyle}>${metricLabel}</td>
                 <td class="col-strategy">
                     <div class="strategy-cell">
                         <div class="strategy-line"><span class="strategy-label">LONG</span><span class="strategy-val" data-exchange="${row.strategy?.long || ''}">${row.strategy?.long || '-'}</span></div>
