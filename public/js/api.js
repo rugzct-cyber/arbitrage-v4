@@ -8,8 +8,8 @@ import { state } from './state.js';
 import { processData } from './logic.js';
 import { renderSkeleton, renderCurrentView, updateLastUpdate } from './ui.js';
 
-// Auto-refresh interval (10 seconds)
-const AUTO_REFRESH_INTERVAL = 10000;
+// Auto-refresh interval (30 seconds)
+const AUTO_REFRESH_INTERVAL = 30000;
 let refreshInterval = null;
 let isRefreshing = false;
 
