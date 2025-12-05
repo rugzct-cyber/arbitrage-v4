@@ -4,7 +4,7 @@
 
 export const API_URL = "/api";
 
-export const EXCHANGES = ['paradex', 'vest', 'extended', 'hyperliquid', 'lighter', 'hibachi', 'aster', 'pacifica', 'variational'];
+export const EXCHANGES = ['paradex', 'vest', 'extended', 'hyperliquid', 'lighter', 'hibachi', 'aster', 'pacifica', 'xyz'];
 
 export const EXCHANGE_LINKS = {
     paradex: "https://app.paradex.trade/r/0xrugz",
@@ -15,5 +15,5 @@ export const EXCHANGE_LINKS = {
     hibachi: "https://hibachi.xyz/r/0xrugz",
     aster: "https://www.asterdex.com/en/referral/6f113B",
     pacifica: "https://app.pacifica.fi?referral=0xrugz",
-    variational: "https://omni.variational.io/?ref=OMNIILQCGBAI"
+    xyz: "https://app.trade.xyz"
 };

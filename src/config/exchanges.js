@@ -1,6 +1,6 @@
 module.exports = {
     // Liste des exchanges activés
-    enabled: ['hyperliquid', 'paradex', 'vest', 'extended', 'lighter', 'hibachi', 'aster', 'pacifica', 'variational'],
+    enabled: ['hyperliquid', 'paradex', 'vest', 'extended', 'lighter', 'hibachi', 'aster', 'pacifica', 'xyz'],
     urls: {
         hyperliquid: "https://api.hyperliquid.xyz",
         paradex: "https://api.prod.paradex.trade/v1/markets",
@@ -16,6 +16,6 @@ module.exports = {
         hibachi: "https://hibachi.xyz/r/0xrugz",
         aster: "https://www.asterdex.com/en/referral/6f113B",
         pacifica: "https://app.pacifica.fi?referral=0xrugz",
-        variational: "https://omni.variational.io/?ref=OMNIILQCGBAI"
+        xyz: "https://app.trade.xyz"
     }
 };
