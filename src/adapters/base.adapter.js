@@ -9,13 +9,36 @@ module.exports = {
      * @param {number} fundingRate - Funding rate (per interval)
      * @param {number} intervalHours - Funding interval in hours (default: 8)
      */
-    normalize: (exchange, pair, price, fundingRate, intervalHours = 8) => ({
-        exchange,
-        pair: pair.toUpperCase(),
-        price: Number(price) || 0,
-        fundingRate: Number(fundingRate) || 0,
-        // APR = rate * (24 / interval) * 365 * 100
-        apr: (Number(fundingRate) || 0) * (24 / intervalHours) * 365 * 100,
-        timestamp: Date.now()
-    })
+    normalize: (exchange, pair, price, fundingRate, intervalHours = 8) => {
+
+        // --- COLLISION MAP FOR TICKER UNIQUENESS ---
+        const COLLISION_MAP = {
+            // SPX: Vest is S&P 500 (RWA), renamed to SPX-RWA
+            'vest': {
+                'SPX': 'SPX-RWA',
+            },
+            // Example for RWA/Crypto collisions:
+            // 'pacifica': { 'GOLD': 'GOLD-RWA' }, 
+            // 'hyperliquid': { 'GOLD': 'GOLD-CRYPTO' },
+        };
+        // -------------------------------------------
+
+        const pairUpper = pair.toUpperCase();
+        let uniquePair = pairUpper;
+
+        // Apply collision de-duplication logic
+        if (COLLISION_MAP[exchange] && COLLISION_MAP[exchange][pairUpper]) {
+            uniquePair = COLLISION_MAP[exchange][pairUpper];
+        }
+
+        return {
+            exchange,
+            pair: uniquePair, // Use unique name (e.g., SPX-RWA) or original
+            price: Number(price) || 0,
+            fundingRate: Number(fundingRate) || 0,
+            // APR = rate * (24 / interval) * 365 * 100
+            apr: (Number(fundingRate) || 0) * (24 / intervalHours) * 365 * 100,
+            timestamp: Date.now()
+        };
+    }
 };
