@@ -27,7 +27,7 @@ module.exports = {
                     const price = parseFloat(stats.markPrice || stats.lastPrice || 0);
                     const fundingRate = parseFloat(stats.fundingRate || 0);
 
-                    return base.normalize("extended", pair, price, fundingRate);
+                    return base.normalize("extended", pair, price, fundingRate, 1); // 1-hour funding
                 });
 
         } catch (error) {

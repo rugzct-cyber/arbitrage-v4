@@ -21,7 +21,7 @@ module.exports = {
                     const price = parseFloat(m.mark || 0);
                     const fundingRate = parseFloat(m.funding || 0);
 
-                    return base.normalize("pacifica", pair, price, fundingRate);
+                    return base.normalize("pacifica", pair, price, fundingRate, 1); // 1-hour funding
                 });
 
         } catch (error) {

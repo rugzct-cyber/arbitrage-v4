@@ -28,7 +28,8 @@ module.exports = {
                     "paradex",
                     normalizedSymbol,
                     market.mark_price || 0,
-                    market.funding_rate || 0 // Note: API uses 'funding_rate', not 'current_funding_rate'
+                    market.funding_rate || 0,
+                    1 // 1-hour funding (testing)
                 );
             });
         } catch (e) {
