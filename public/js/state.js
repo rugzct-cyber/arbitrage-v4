@@ -8,6 +8,7 @@ export const state = {
     fundingData: [],
     priceData: [],
     rawFundingData: [],
+    rawPriceData: [],
     selectedExchanges: EXCHANGES.reduce((acc, ex) => ({ ...acc, [ex]: true }), {}),
     activeTab: 'funding',
     sort: { column: 'metric', direction: 'desc' },

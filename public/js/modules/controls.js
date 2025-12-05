@@ -29,6 +29,9 @@ export function initSidebar() {
             if (state.rawFundingData.length > 0) {
                 state.fundingData = processData(state.rawFundingData, 'apr');
             }
+            if (state.rawPriceData && state.rawPriceData.length > 0) {
+                state.priceData = processData(state.rawPriceData, 'price');
+            }
 
             renderCurrentView();
         };

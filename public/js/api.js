@@ -45,8 +45,9 @@ export async function refreshAllData(showSkeleton = true) {
         state.exchangeStatus = fundingJson.exchangeStatus || {};
 
         state.rawFundingData = fundingJson.data || [];
+        state.rawPriceData = priceJson.data || [];
         state.fundingData = processData(state.rawFundingData, 'apr');
-        state.priceData = processData(priceJson.data || [], 'price');
+        state.priceData = processData(state.rawPriceData, 'price');
 
         renderCurrentView();
         updateLastUpdate();
