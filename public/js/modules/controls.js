@@ -24,7 +24,7 @@ export function initSidebar() {
             state.selectedExchanges[ex] = !state.selectedExchanges[ex];
             btn.classList.toggle('active');
             saveState();
-            updateVisibility();
+            renderCurrentView();
         };
         container.appendChild(btn);
     });
