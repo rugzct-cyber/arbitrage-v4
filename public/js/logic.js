@@ -42,7 +42,8 @@ export function processData(rawData, metricKey) {
 
         if (metricKey === 'apr') {
             row.strategy = { long: values[0][0], short: values[values.length - 1][0] };
-            row.metric = values[values.length - 1][1];
+            // Net APR = Max - Min (Short highest, Long lowest)
+            row.metric = values[values.length - 1][1] - values[0][1];
         } else {
             row.strategy = { long: values[0][0], short: values[values.length - 1][0] };
             const min = values[0][1];
