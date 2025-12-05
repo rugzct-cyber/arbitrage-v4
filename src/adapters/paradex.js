@@ -18,8 +18,6 @@ module.exports = {
             // Filter for PERP only
             const validItems = response.results.filter(m => m.symbol && m.symbol.endsWith("-PERP"));
 
-            console.log(`[PARADEX] Fetched ${validItems.length} PERP markets.`);
-
             return validItems.map(market => {
                 // Normalize symbol: BTC-USD-PERP -> BTC
                 const normalizedSymbol = market.symbol.split("-")[0];

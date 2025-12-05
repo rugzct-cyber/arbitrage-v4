@@ -29,7 +29,6 @@ async function getAllMarketData() {
         return cache.data;
     }
     // 2. Cache Miss - Refresh
-    console.log(`[AGGREGATOR] Refreshing data from ${Object.keys(adapters).length} exchanges...`);
     const promises = Object.values(adapters).map(async (adapter) => {
         try {
             const timeoutPromise = new Promise((_, reject) =>

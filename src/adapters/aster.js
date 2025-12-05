@@ -20,7 +20,6 @@ async function loadActiveSymbols() {
                 }
             });
             statusLoaded = true;
-            console.log(`[ASTER] Loaded ${ACTIVE_SYMBOLS.size} active symbols.`);
         }
     } catch (error) {
         console.error("[ASTER] Error loading exchange info:", error.message);
