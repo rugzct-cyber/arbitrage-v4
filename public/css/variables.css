@@ -19,16 +19,19 @@
     /* Blue-Grey */
     --text-muted: #64748B;
 
-    /* Accents (Cyan mapped to --gold variable) */
-    --gold: #06B6D4;
-    /* Electric Cyan */
-    --gold-dim: rgba(6, 182, 212, 0.1);
-    --gold-glow: rgba(6, 182, 212, 0.25);
+    /* Accents (Blue Theme) */
+    --gold: #3C82F6;
+    /* Bright Blue */
+    --gold-dim: rgba(60, 130, 246, 0.15);
+    --gold-glow: rgba(60, 130, 246, 0.3);
+
+    /* Navy Background */
+    --navy-deep: rgba(20, 30, 50, 0.6);
 
     /* Borders */
     --border: #1A1A1A;
     /* Almost invisible borders */
-    --border-active: #06B6D4;
+    --border-active: rgba(60, 130, 246, 0.5);
 
     /* Status */
     --green: #34D399;

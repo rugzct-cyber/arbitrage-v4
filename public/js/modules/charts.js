@@ -53,8 +53,8 @@ export function renderChart(row, container, isFunding, period) {
     const ctx = container.querySelector('canvas').getContext('2d');
 
     const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, 'rgba(6, 182, 212, 0.2)');
-    gradient.addColorStop(1, 'rgba(6, 182, 212, 0)');
+    gradient.addColorStop(0, 'rgba(60, 130, 246, 0.2)');
+    gradient.addColorStop(1, 'rgba(60, 130, 246, 0)');
 
     const labels = generateTimeLabels(period, history.length);
 
@@ -65,7 +65,7 @@ export function renderChart(row, container, isFunding, period) {
             datasets: [{
                 label: isFunding ? 'APR %' : 'Spread %',
                 data: history,
-                borderColor: '#06B6D4',
+                borderColor: '#3C82F6',
                 backgroundColor: gradient,
                 borderWidth: 2,
                 pointRadius: 0,
