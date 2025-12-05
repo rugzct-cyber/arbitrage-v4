@@ -29,7 +29,7 @@ module.exports = {
                     normalizedSymbol,
                     market.mark_price || 0,
                     market.funding_rate || 0,
-                    1 // 1-hour funding (testing)
+                    8 // Standard 8-hour funding period
                 );
             });
         } catch (e) {
