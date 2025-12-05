@@ -14,7 +14,8 @@ export const state = {
     fundingBasis: 'apy',
     showAverage: false,
     averagePeriod: '30D',
-    chartInstance: null
+    chartInstance: null,
+    searchQuery: ''
 };
 
 export function loadState() {

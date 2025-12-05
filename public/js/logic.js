@@ -97,6 +97,7 @@ export function calculateStats(history) {
 
 /**
  * Returns sorted copy of data based on current sort state
+ * Null/undefined values are always pushed to the end
  * @param {Array} data - Data array to sort
  * @returns {Array} Sorted data
  */
@@ -106,17 +107,27 @@ export function getSortedData(data) {
 
     return [...data].sort((a, b) => {
         let valA, valB;
+
         if (column === 'pair') {
             valA = a.pair;
             valB = b.pair;
             return valA.localeCompare(valB) * multiplier;
         } else if (column === 'metric') {
-            valA = a.metric || -Infinity;
-            valB = b.metric || -Infinity;
+            valA = a.metric;
+            valB = b.metric;
         } else {
-            valA = a.exchanges[column] ?? -Infinity;
-            valB = b.exchanges[column] ?? -Infinity;
+            valA = a.exchanges[column];
+            valB = b.exchanges[column];
         }
+
+        // Nulls-last logic: always push empty values to bottom
+        const isA = valA !== undefined && valA !== null;
+        const isB = valB !== undefined && valB !== null;
+
+        if (isA && !isB) return -1; // A exists, B empty => A wins (stays on top)
+        if (!isA && isB) return 1;  // A empty, B exists => B wins
+        if (!isA && !isB) return 0; // Both empty => equal
+
         return (valA - valB) * multiplier;
     });
 }

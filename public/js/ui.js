@@ -36,9 +36,15 @@ export function renderSkeleton() {
  */
 export function renderCurrentView() {
     const isFunding = state.activeTab === 'funding';
-    const data = getSortedData(isFunding ? state.fundingData : state.priceData);
+    let data = getSortedData(isFunding ? state.fundingData : state.priceData);
     const tbody = document.getElementById(isFunding ? 'funding-table-body' : 'price-table-body');
     if (!tbody) return;
+
+    // FILTER by search query
+    if (state.searchQuery && state.searchQuery.trim() !== '') {
+        const query = state.searchQuery.toLowerCase();
+        data = data.filter(row => row.pair.toLowerCase().includes(query));
+    }
 
     // Update Header Styles
     const tableId = isFunding ? 'funding-table' : 'price-table';
@@ -114,12 +120,18 @@ export function renderCurrentView() {
                 if (!cell) return;
                 const val = row.exchanges[ex];
                 const isValid = val !== undefined && val !== null;
+                const isLong = row.strategy?.long === ex;
+                const isShort = row.strategy?.short === ex;
                 const newText = isValid ? (isFunding ? `${formatElastic(val, 'apr')}%` : `$${formatElastic(val, 'price')}`) : '-';
                 const span = cell.querySelector('span');
-                if (span && span.textContent !== newText) {
-                    span.textContent = newText;
+                if (span) {
+                    if (span.textContent !== newText) span.textContent = newText;
                     span.style.opacity = isValid ? '' : '0.2';
-                    span.className = isValid ? 'exchange-val' : '';
+                    // Apply highlight classes
+                    span.classList.remove('val-long', 'val-short');
+                    if (isValid && isLong) span.classList.add('val-long');
+                    if (isValid && isShort) span.classList.add('val-short');
+                    span.className = span.className || (isValid ? 'exchange-val' : '');
                 }
                 cell.dataset.exchange = isValid ? ex : '';
                 cell.style.cursor = isValid ? 'pointer' : '';
@@ -141,7 +153,10 @@ export function renderCurrentView() {
                 ${EXCHANGES.map(ex => {
                 const val = row.exchanges[ex];
                 const isValid = val !== undefined && val !== null;
-                return `<td data-exchange="${isValid ? ex : ''}" style="cursor:${isValid ? 'pointer' : ''}"><span class="${isValid ? 'exchange-val' : ''}" style="${isValid ? '' : 'opacity:0.2'}">${isValid ? (isFunding ? `${formatElastic(val, 'apr')}%` : `$${formatElastic(val, 'price')}`) : '-'}</span></td>`;
+                const isLong = row.strategy?.long === ex;
+                const isShort = row.strategy?.short === ex;
+                const highlightClass = isValid ? (isLong ? 'exchange-val val-long' : (isShort ? 'exchange-val val-short' : 'exchange-val')) : '';
+                return `<td data-exchange="${isValid ? ex : ''}" style="cursor:${isValid ? 'pointer' : ''}"><span class="${highlightClass}" style="${isValid ? '' : 'opacity:0.2'}">${isValid ? (isFunding ? `${formatElastic(val, 'apr')}%` : `$${formatElastic(val, 'price')}`) : '-'}</span></td>`;
             }).join('')}
             `;
             tbody.appendChild(tr);
@@ -153,6 +168,11 @@ export function renderCurrentView() {
             chartTr.innerHTML = `<td colspan="${colSpan}"><div class="inline-chart-container"></div></td>`;
             tbody.appendChild(chartTr);
         }
+
+        // FORCE REORDER: Always append to ensure correct sort order
+        const existingChartRow = document.getElementById(chartId);
+        tbody.appendChild(tr);
+        if (existingChartRow) tbody.appendChild(existingChartRow);
     });
 
     // STEP 3: CLEANUP - Remove stale rows (skeletons, old pairs)
@@ -520,6 +540,19 @@ export function handleSort(column) {
 export function updateLastUpdate() {
     const el = document.getElementById('last-update');
     if (el) el.textContent = `UPDATED: ${new Date().toLocaleTimeString()}`;
+}
+
+/**
+ * Initialize search input listener
+ */
+export function initSearch() {
+    const searchInput = document.getElementById('search-input');
+    if (!searchInput) return;
+
+    searchInput.addEventListener('input', (e) => {
+        state.searchQuery = e.target.value;
+        renderCurrentView();
+    });
 }
 
 // Make openExchange available globally for backward compatibility

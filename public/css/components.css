@@ -2,6 +2,36 @@
 
 /* Reusable UI Components */
 
+/* SEARCH INPUT */
+.search-container {
+    margin-bottom: 20px;
+}
+
+#search-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: none !important;
+}
+
+#search-input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.5;
+}
+
+#search-input:focus {
+    outline: none;
+    border-color: var(--gold);
+    background: rgba(255, 255, 255, 0.08);
+}
+
 /* TAB BUTTONS (Modern Underline Style) */
 .tab-button {
     background: transparent;

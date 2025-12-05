@@ -13,18 +13,27 @@ table {
     border-spacing: 0 8px;
 }
 
-/* HEADER */
+/* STICKY HEADER - Fixed */
+thead {
+    transform: translateY(-1px);
+    /* Fix pixel gap */
+}
+
 th {
     text-align: left;
-    padding: 12px 20px;
+    padding: 15px 20px;
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: var(--text-secondary);
-    background: transparent;
-    border-bottom: none;
+    background: #000000 !important;
+    /* Full opacity */
     font-weight: 600;
-    opacity: 0.7;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    box-shadow: 0 1px 0 var(--border);
+    /* Clean separator */
 }
 
 /* Numeric columns alignment */
@@ -208,4 +217,19 @@ tbody tr.selected-row td {
     border-color: var(--gold);
     color: var(--gold);
     background: rgba(6, 182, 212, 0.05);
+}
+
+/* Strategy Highlights - Pastel Colors */
+.val-long {
+    color: #6EE7B7 !important;
+    /* Soft Mint Green */
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(110, 231, 183, 0.15);
+}
+
+.val-short {
+    color: #FCA5A5 !important;
+    /* Soft Salmon Red */
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(252, 165, 165, 0.15);
 }
