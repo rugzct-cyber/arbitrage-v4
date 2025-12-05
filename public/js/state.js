@@ -25,7 +25,16 @@ export function loadState() {
     if (saved) {
         try {
             const prefs = JSON.parse(saved);
-            state.selectedExchanges = prefs.selectedExchanges || state.selectedExchanges;
+            // Merge saved selectedExchanges with current EXCHANGES list
+            // New exchanges default to true, existing ones keep their saved state
+            if (prefs.selectedExchanges) {
+                EXCHANGES.forEach(ex => {
+                    if (prefs.selectedExchanges[ex] !== undefined) {
+                        state.selectedExchanges[ex] = prefs.selectedExchanges[ex];
+                    }
+                    // New exchanges stay true (default from initial state)
+                });
+            }
             state.activeTab = prefs.activeTab || state.activeTab;
             state.fundingBasis = prefs.fundingBasis || state.fundingBasis;
             if (prefs.showAverage !== undefined) state.showAverage = prefs.showAverage;
@@ -57,7 +66,6 @@ export function applyInitialState() {
     document.getElementById('funding-view').style.display = state.activeTab === 'funding' ? 'block' : 'none';
     document.getElementById('price-view').style.display = state.activeTab === 'price' ? 'block' : 'none';
 
-    // Restore funding toggle
     // Restore funding toggle
     document.querySelectorAll('.toggle-btn[data-basis]').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.basis === state.fundingBasis);
