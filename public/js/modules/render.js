@@ -44,6 +44,19 @@ export function renderCurrentView() {
         data = data.filter(row => row.pair.toLowerCase().includes(query));
     }
 
+    // FILTER: Active Exchanges & Admin Mode
+    const activeExchanges = Object.keys(state.selectedExchanges).filter(ex => state.selectedExchanges[ex]);
+    data = data.filter(row => {
+        const validCount = activeExchanges.reduce((count, ex) => {
+            const val = row.exchanges[ex];
+            return (val !== undefined && val !== null) ? count + 1 : count;
+        }, 0);
+        // ADMIN MODE: Show all with at least 1 value
+        if (state.adminMode) return validCount >= 1;
+        // NORMAL MODE: Need at least 2 values for arbitrage
+        return validCount >= 2;
+    });
+
     // Update Header Styles
     const tableId = isFunding ? 'funding-table' : 'price-table';
     const thead = document.getElementById(tableId)?.querySelector('thead');
@@ -65,6 +78,9 @@ export function renderCurrentView() {
     const validIds = new Set();
     const colSpan = 3 + EXCHANGES.length;
     const prefix = isFunding ? 'funding' : 'price';
+
+    // DocumentFragment for batch DOM insertion (reduces reflows)
+    const fragment = document.createDocumentFragment();
 
     // STEP 2: Update/Create rows
     data.forEach((row, index) => {
@@ -167,11 +183,14 @@ export function renderCurrentView() {
             tbody.appendChild(chartTr);
         }
 
-        // FORCE REORDER: Always append to ensure correct sort order
+        // Add to fragment for batch insertion
         const existingChartRow = document.getElementById(chartId);
-        tbody.appendChild(tr);
-        if (existingChartRow) tbody.appendChild(existingChartRow);
+        fragment.appendChild(tr);
+        if (existingChartRow) fragment.appendChild(existingChartRow);
     });
+
+    // BATCH INSERT: Single DOM operation for all rows
+    tbody.appendChild(fragment);
 
     // STEP 3: CLEANUP - Remove stale rows (skeletons, old pairs)
     const allRows = Array.from(tbody.children);

@@ -73,6 +73,12 @@ tbody tr td:last-child {
     border-right: 1px solid var(--border);
 }
 
+/* VIRTUAL RENDERING - Skip off-screen rows */
+tbody tr {
+    content-visibility: auto;
+    contain-intrinsic-size: 50px;
+}
+
 /* HOVER EFFECT - INSTANT */
 tbody tr:hover td {
     background: var(--bg-card-hover);

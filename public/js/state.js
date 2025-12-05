@@ -15,6 +15,8 @@ export const state = {
     showAverage: false,
     averagePeriod: '30D',
     chartInstance: null,
+    // Admin mode: ?admin=true in URL shows all pairs (min 1 value instead of 2)
+    adminMode: new URLSearchParams(window.location.search).has('admin'),
     searchQuery: ''
 };
 
