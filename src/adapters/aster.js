@@ -1,10 +1,39 @@
 const { httpGet } = require('../utils/fetcher');
 const base = require('./base.adapter');
 
+// Cache for active symbols from exchangeInfo
+let ACTIVE_SYMBOLS = new Set();
+let statusLoaded = false;
+
+async function loadActiveSymbols() {
+    if (statusLoaded) return;
+
+    try {
+        const url = "https://fapi.asterdex.com/fapi/v3/exchangeInfo";
+        const response = await httpGet(url);
+
+        if (response && Array.isArray(response.symbols)) {
+            response.symbols.forEach(s => {
+                // Status "TRADING" indicates active market
+                if (s.status === 'TRADING') {
+                    ACTIVE_SYMBOLS.add(s.symbol);
+                }
+            });
+            statusLoaded = true;
+            console.log(`[ASTER] Loaded ${ACTIVE_SYMBOLS.size} active symbols.`);
+        }
+    } catch (error) {
+        console.error("[ASTER] Error loading exchange info:", error.message);
+    }
+}
+
 module.exports = {
     name: "aster",
     getGlobalData: async () => {
         try {
+            // Load active symbols on first call
+            await loadActiveSymbols();
+
             const url = "https://fapi.asterdex.com/fapi/v3/premiumIndex";
             const response = await httpGet(url);
 
@@ -15,7 +44,7 @@ module.exports = {
             }
 
             return markets
-                .filter(m => m.symbol && m.markPrice)
+                .filter(m => m.symbol && ACTIVE_SYMBOLS.has(m.symbol)) // Filter only TRADING status
                 .map(m => {
                     // Remove USDT/USD suffix for pair name
                     let pair = m.symbol;

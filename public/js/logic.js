@@ -34,21 +34,35 @@ export function processData(rawData, metricKey) {
     });
 
     return Object.values(pairs).map(row => {
-        const values = Object.entries(row.exchanges).filter(v => v[1] !== undefined && v[1] !== null);
+        // Filter to only include visible/selected exchanges
+        const visibleEntries = Object.entries(row.exchanges).filter(([ex, val]) => {
+            return state.selectedExchanges[ex] && val !== undefined && val !== null;
+        });
 
-        if (values.length === 0) return row;
+        if (visibleEntries.length === 0) return row;
 
-        values.sort((a, b) => a[1] - b[1]);
+        visibleEntries.sort((a, b) => a[1] - b[1]);
 
         if (metricKey === 'apr') {
-            row.strategy = { long: values[0][0], short: values[values.length - 1][0] };
-            // Net APR = Max - Min (Short highest, Long lowest)
-            row.metric = values[values.length - 1][1] - values[0][1];
+            // Need at least 2 visible exchanges for arbitrage
+            if (visibleEntries.length < 2) {
+                row.strategy = { long: visibleEntries[0]?.[0] || '-', short: '-' };
+                row.metric = 0;
+            } else {
+                row.strategy = { long: visibleEntries[0][0], short: visibleEntries[visibleEntries.length - 1][0] };
+                // Net APR = Max - Min (Short highest, Long lowest)
+                row.metric = visibleEntries[visibleEntries.length - 1][1] - visibleEntries[0][1];
+            }
         } else {
-            row.strategy = { long: values[0][0], short: values[values.length - 1][0] };
-            const min = values[0][1];
-            const max = values[values.length - 1][1];
-            row.metric = min > 0 ? ((max - min) / min) * 100 : 0;
+            if (visibleEntries.length < 2) {
+                row.strategy = { long: visibleEntries[0]?.[0] || '-', short: '-' };
+                row.metric = 0;
+            } else {
+                row.strategy = { long: visibleEntries[0][0], short: visibleEntries[visibleEntries.length - 1][0] };
+                const min = visibleEntries[0][1];
+                const max = visibleEntries[visibleEntries.length - 1][1];
+                row.metric = min > 0 ? ((max - min) / min) * 100 : 0;
+            }
         }
         return row;
     });

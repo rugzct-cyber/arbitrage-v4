@@ -7,15 +7,22 @@ module.exports = {
         if (!data) return [];
         const universe = data[0].universe;
         const assetCtxs = data[1];
-        return universe.map((asset, index) => {
-            const ctx = assetCtxs[index];
-            return {
-                exchange: "hyperliquid",
-                pair: asset.name,
-                price: parseFloat(ctx.markPx),
-                fundingRate: parseFloat(ctx.funding),
-                apr: parseFloat(ctx.funding) * 24 * 365 * 100
-            };
-        });
+
+        // Filter out delisted assets using isDelisted field
+        return universe
+            .map((asset, index) => ({ asset, ctx: assetCtxs[index] }))
+            .filter(item => !item.asset.isDelisted) // Exclude delisted tokens
+            .map(item => {
+                const asset = item.asset;
+                const ctx = item.ctx;
+
+                return {
+                    exchange: "hyperliquid",
+                    pair: asset.name,
+                    price: parseFloat(ctx.markPx),
+                    fundingRate: parseFloat(ctx.funding),
+                    apr: parseFloat(ctx.funding) * 24 * 365 * 100
+                };
+            });
     }
 };

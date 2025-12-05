@@ -24,6 +24,12 @@ export function initSidebar() {
             state.selectedExchanges[ex] = !state.selectedExchanges[ex];
             btn.classList.toggle('active');
             saveState();
+
+            // Force recalculation of strategy with new visible exchanges
+            if (state.rawFundingData.length > 0) {
+                state.fundingData = processData(state.rawFundingData, 'apr');
+            }
+
             renderCurrentView();
         };
         container.appendChild(btn);

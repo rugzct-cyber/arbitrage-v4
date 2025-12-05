@@ -13,13 +13,17 @@ module.exports = {
 
         // --- COLLISION MAP FOR TICKER UNIQUENESS ---
         const COLLISION_MAP = {
-            // SPX: Vest is S&P 500 (RWA), renamed to SPX-RWA
             'vest': {
                 'SPX': 'SPX-RWA',
+                'F': 'F-RWA',
+                'STRK': 'STRK-RWA',
+                'ON': 'ON-RWA',
+                'MET': 'MET-RWA',
+                'ZETA': 'ZETA-RWA',
+                'DASH': 'DASH-RWA',
+                'OPEN': 'OPEN-RWA',
             },
-            // Example for RWA/Crypto collisions:
-            // 'pacifica': { 'GOLD': 'GOLD-RWA' }, 
-            // 'hyperliquid': { 'GOLD': 'GOLD-CRYPTO' },
+            // Add other exchanges and collision pairs here if needed
         };
         // -------------------------------------------
 
@@ -33,7 +37,7 @@ module.exports = {
 
         return {
             exchange,
-            pair: uniquePair, // Use unique name (e.g., SPX-RWA) or original
+            pair: uniquePair,
             price: Number(price) || 0,
             fundingRate: Number(fundingRate) || 0,
             // APR = rate * (24 / interval) * 365 * 100
