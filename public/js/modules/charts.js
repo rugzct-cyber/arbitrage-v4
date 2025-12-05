@@ -8,11 +8,36 @@ import { generateHistory, calculateStats } from '../logic.js';
 import { formatElastic } from '../utils.js';
 
 /**
- * Renders Chart.js graph
+ * Renders Chart.js graph or "No Historical Data" message
  */
 export function renderChart(row, container, isFunding, period) {
     const type = isFunding ? 'apr' : 'price';
     const history = generateHistory(row.metric, type, period);
+
+    // No historical data available - show message
+    if (!history || history.length === 0) {
+        container.innerHTML = `
+        <div class="inline-header">
+            <div class="inline-title">${row.pair} <span style="font-size:12px; color:#666; margin-left:10px">${isFunding ? 'FUNDING HISTORY' : 'SPREAD EVOLUTION'}</span></div>
+            <div class="time-filters">
+                <button class="inline-close">CLOSE</button>
+            </div>
+        </div>
+        <div class="no-history-message">
+            <div class="no-history-icon">📊</div>
+            <div class="no-history-text">No Historical Data Available</div>
+            <div class="no-history-subtext">Historical charts will be available when API provides time-series data</div>
+        </div>
+        `;
+
+        container.querySelector('.inline-close').onclick = () => {
+            container.closest('.chart-row').classList.remove('active');
+            document.querySelectorAll('tr.selected-row').forEach(el => el.classList.remove('selected-row'));
+        };
+        return;
+    }
+
+    // Has historical data - render chart
     const stats = calculateStats(history);
 
     const lblAvg = isFunding ? `AVG APR (${period})` : 'AVG SPREAD';

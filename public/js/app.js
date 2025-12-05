@@ -5,7 +5,7 @@
 
 import { loadState, applyInitialState } from './state.js';
 import { initTabs, initSidebar, initSorting, initFundingToggles, initTableEvents, initSearch } from './ui.js';
-import { refreshAllData } from './api.js';
+import { refreshAllData, initAutoRefresh } from './api.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     loadState();
@@ -13,9 +13,16 @@ document.addEventListener('DOMContentLoaded', () => {
     initSidebar();
     initSorting();
     initFundingToggles();
-    initTableEvents(); // Event delegation for table clicks
-    initSearch(); // Real-time search filter
+    initTableEvents();
+    initSearch();
     applyInitialState();
+
+    // Initial data fetch
     refreshAllData();
-    document.getElementById('btn-refresh').addEventListener('click', refreshAllData);
+
+    // Manual refresh button
+    document.getElementById('btn-refresh').addEventListener('click', () => refreshAllData(true));
+
+    // Start auto-refresh (10s interval, pauses when tab hidden)
+    initAutoRefresh();
 });

@@ -69,32 +69,22 @@ export function processData(rawData, metricKey) {
 }
 
 /**
- * Generates simulated historical data for charting
- * @param {number} currentVal - Current metric value
- * @param {string} type - 'apr' or 'price'
- * @param {string} period - '24H', '7D', '30D', or 'ALL'
- * @returns {Array} Historical data points
+ * Returns historical data for charting
+ * NOTE: Real historical data should come from API
+ * Currently returns null as fake data generation was removed
+ * @param {number} currentVal - Current metric value (unused for now)
+ * @param {string} type - 'apr' or 'price' (unused for now)
+ * @param {string} period - '24H', '7D', '30D', or 'ALL' (unused for now)
+ * @param {Array} realHistory - Optional real historical data from API
+ * @returns {Array|null} Historical data points or null if unavailable
  */
-export function generateHistory(currentVal, type, period = '30D') {
-    let points = 30;
-    let volatility = 1;
-
-    if (period === '24H') { points = 23; volatility = 0.5; } // Total 24 (23 + 1)
-    if (period === '7D') { points = 6; volatility = 0.8; }   // Total 7 (6 + 1)
-    if (period === '30D') { points = 29; volatility = 1; }   // Total 30 (29 + 1)
-    if (period === 'ALL') { points = 89; volatility = 1.5; } // Total 90 (89 + 1)
-
-    const data = [];
-    let val = currentVal || 0;
-
-    for (let i = 0; i < points; i++) {
-        const noise = type === 'apr' ? (Math.random() - 0.5) * 10 * volatility : (Math.random() - 0.5) * 0.2 * volatility;
-        val = val - noise;
-        // if (type === 'price' && val < 0) val = 0; // Removed to allow negative spreads
-        data.unshift(val);
+export function generateHistory(currentVal, type, period = '30D', realHistory = null) {
+    // Return real history if provided by API
+    if (realHistory && realHistory.length > 0) {
+        return realHistory;
     }
-    data.push(currentVal);
-    return data;
+    // No fake data - return null until real API data is available
+    return null;
 }
 
 /**
