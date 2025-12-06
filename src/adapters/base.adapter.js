@@ -27,6 +27,9 @@ module.exports = {
                 'SPX': 'SPX500',  // RWA Index
                 'SPX500M': 'SPX500'  // RWA Index
             },
+            'aster': {
+                'GOOG': 'GOOGL'  // Standardize Google ticker
+            },
             // Paradex, Lighter, Hyperliquid keep SPX as-is (crypto altcoin)
             // Add other exchanges and collision pairs here if needed
         };

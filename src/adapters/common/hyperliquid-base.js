@@ -41,7 +41,7 @@ function createHyperliquidAdapter(config) {
 
                     return {
                         exchange: name,
-                        pair: transformPair(asset.name),
+                        pair: transformPair(asset.name).toUpperCase(), // Force uppercase for consistency
                         price: parseFloat(ctx.markPx),
                         fundingRate: parseFloat(ctx.funding),
                         apr: parseFloat(ctx.funding) * 24 * 365 * 100
