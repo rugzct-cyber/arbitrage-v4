@@ -15,12 +15,7 @@
 
 <body>
     <header id="topbar">
-        <div style="display:flex; align-items:center; gap:12px;">
-            <button id="btn-toggle-sidebar"
-                style="background:transparent; border:none; color:var(--text-main); font-size:20px; cursor:pointer; padding:8px; border-radius:4px; transition:background 0.2s;"
-                title="Toggle Sidebar">☰</button>
-            <div id="logo">ARBITRADE</div>
-        </div>
+        <div id="logo">ARBITRADE</div>
         <div>
             <button class="tab-button active" data-tab="funding">Funding</button>
             <button class="tab-button" data-tab="price">Price</button>
@@ -32,6 +27,7 @@
     </header>
     <div id="app-layout">
         <aside id="sidebar">
+            <button id="btn-toggle-sidebar" class="sidebar-collapse-btn" title="Réduire">◂</button>
             <div class="search-container">
                 <input type="text" id="search-input" placeholder="SEARCH PAIR..." autocomplete="off">
             </div>

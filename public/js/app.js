@@ -26,12 +26,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Start auto-refresh (10s interval, pauses when tab hidden)
     initAutoRefresh();
 
-    // Sidebar toggle functionality
+    // Sidebar toggle functionality with persistence
     const toggleBtn = document.getElementById('btn-toggle-sidebar');
     const appLayout = document.getElementById('app-layout');
     if (toggleBtn && appLayout) {
+        // Restore saved state
+        if (localStorage.getItem('sidebar_collapsed') === 'true') {
+            appLayout.classList.add('collapsed');
+            toggleBtn.textContent = '▸';
+        }
+
         toggleBtn.addEventListener('click', () => {
             appLayout.classList.toggle('collapsed');
+            const isCollapsed = appLayout.classList.contains('collapsed');
+            toggleBtn.textContent = isCollapsed ? '▸' : '◂';
+            localStorage.setItem('sidebar_collapsed', isCollapsed);
         });
     }
 });
