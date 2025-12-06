@@ -23,9 +23,6 @@ module.exports = {
                 'DASH': 'DASH-RWA',
                 'OPEN': 'OPEN-RWA',
             },
-            'ostium': {
-                'SPX': 'SPX500'  // RWA Index
-            },
             'extended': {
                 'SPX': 'SPX500',  // RWA Index
                 'SPX500M': 'SPX500'  // RWA Index
