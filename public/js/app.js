@@ -25,4 +25,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Start auto-refresh (10s interval, pauses when tab hidden)
     initAutoRefresh();
+
+    // Sidebar toggle functionality
+    const toggleBtn = document.getElementById('btn-toggle-sidebar');
+    const appLayout = document.getElementById('app-layout');
+    if (toggleBtn && appLayout) {
+        toggleBtn.addEventListener('click', () => {
+            appLayout.classList.toggle('collapsed');
+        });
+    }
 });

@@ -57,3 +57,51 @@
     overflow-y: auto;
     background: var(--bg-main);
 }
+
+/* SIDEBAR COLLAPSED STATE */
+#app-layout.collapsed {
+    grid-template-columns: 60px 1fr;
+}
+
+#app-layout.collapsed #sidebar {
+    overflow-x: hidden;
+    padding: 30px 10px;
+}
+
+#app-layout.collapsed #sidebar .search-container,
+#app-layout.collapsed #sidebar h3 {
+    opacity: 0;
+    pointer-events: none;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+#app-layout.collapsed #sidebar .exchange-toggle {
+    justify-content: center;
+    padding: 8px;
+}
+
+#app-layout.collapsed #sidebar .exchange-toggle img {
+    margin-right: 0;
+}
+
+#app-layout.collapsed #sidebar .exchange-toggle span,
+#app-layout.collapsed #sidebar .exchange-toggle:not(img) {
+    display: none;
+}
+
+/* Hide text in collapsed exchange buttons */
+#app-layout.collapsed .exchange-toggle {
+    font-size: 0;
+}
+
+#app-layout.collapsed .exchange-toggle img {
+    width: 24px;
+    height: 24px;
+}
+
+#btn-toggle-sidebar:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
