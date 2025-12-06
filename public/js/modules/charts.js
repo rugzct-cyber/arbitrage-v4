@@ -1,3 +1,5 @@
+// public/js/modules/charts.js
+
 /**
  * Chart Rendering Module
  * Handles Chart.js graphs and time labels
@@ -6,17 +8,38 @@
 import { state } from '../state.js';
 import { generateHistory, calculateStats } from '../logic.js';
 import { formatElastic } from '../utils.js';
+import { API_URL } from '../config.js';
 
 /**
- * Renders Chart.js graph or "No Historical Data" message
+ * Renders the loading state for the chart
  */
-export function renderChart(row, container, isFunding, period) {
-    const type = isFunding ? 'apr' : 'price';
-    const history = generateHistory(row.metric, type, period);
+export function renderLoading(row, container, isFunding, period) {
+    container.innerHTML = `
+        <div class="inline-header">
+            <div class="inline-title">${row.pair} <span style="font-size:12px; color:#666; margin-left:10px">${isFunding ? 'FUNDING HISTORY' : 'SPREAD EVOLUTION'}</span></div>
+            <div class="time-filters">
+                <button class="inline-close">CLOSE</button>
+            </div>
+        </div>
+        <div class="no-history-message">
+            <div class="no-history-icon">⏳</div>
+            <div class="no-history-text">Loading Historical Data for ${period}...</div>
+            <div class="no-history-subtext">Fetching time-series from database.</div>
+        </div>
+        `;
 
-    // No historical data available - show message
-    if (!history || history.length === 0) {
-        container.innerHTML = `
+    // Re-bind close button
+    container.querySelector('.inline-close').onclick = () => {
+        container.closest('.chart-row').classList.remove('active');
+        document.querySelectorAll('tr.selected-row').forEach(el => el.classList.remove('selected-row'));
+    };
+}
+
+/**
+ * Renders "No Historical Data" message
+ */
+export function renderNoHistory(row, container, isFunding, period) {
+    container.innerHTML = `
         <div class="inline-header">
             <div class="inline-title">${row.pair} <span style="font-size:12px; color:#666; margin-left:10px">${isFunding ? 'FUNDING HISTORY' : 'SPREAD EVOLUTION'}</span></div>
             <div class="time-filters">
@@ -30,15 +53,51 @@ export function renderChart(row, container, isFunding, period) {
         </div>
         `;
 
-        container.querySelector('.inline-close').onclick = () => {
-            container.closest('.chart-row').classList.remove('active');
-            document.querySelectorAll('tr.selected-row').forEach(el => el.classList.remove('selected-row'));
-        };
-        return;
+    container.querySelector('.inline-close').onclick = () => {
+        container.closest('.chart-row').classList.remove('active');
+        document.querySelectorAll('tr.selected-row').forEach(el => el.classList.remove('selected-row'));
+    };
+}
+
+
+/**
+ * Fetches data and then calls renderChart
+ */
+export async function fetchAndRenderChart(row, container, isFunding, period) {
+    renderLoading(row, container, isFunding, period); // Show loading state
+
+    const type = isFunding ? 'apr' : 'price';
+
+    try {
+        const url = `${API_URL}/history?pair=${row.pair}&type=${type}&period=${period}`;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (data.success && data.history && data.history.length > 0) {
+            renderChart(row, container, isFunding, period, data.history);
+        } else {
+            renderNoHistory(row, container, isFunding, period);
+        }
+    } catch (e) {
+        console.error("[CHART] Failed to fetch historical data:", e);
+        renderNoHistory(row, container, isFunding, period);
     }
+}
+
+
+/**
+ * Renders Chart.js graph or "No Historical Data" message
+ * @param {Object} row - The row data
+ * @param {HTMLElement} container - The chart container element
+ * @param {boolean} isFunding - True if funding data
+ * @param {string} period - The time period ('24H', '7D', '30D', 'ALL')
+ * @param {Array} history - The actual historical data array from the API
+ */
+export function renderChart(row, container, isFunding, period, history) {
 
     // Has historical data - render chart
     const stats = calculateStats(history);
+    const type = isFunding ? 'apr' : 'price';
 
     const lblAvg = isFunding ? `AVG APR (${period})` : 'AVG SPREAD';
     const lblMax = isFunding ? 'MAX APR' : 'MAX SPREAD';
@@ -71,7 +130,8 @@ export function renderChart(row, container, isFunding, period) {
 
     container.querySelectorAll('.time-btn').forEach(btn => {
         if (btn.dataset.period === period) btn.classList.add('active');
-        btn.onclick = () => renderChart(row, container, isFunding, btn.dataset.period);
+        // UPDATED: on click, we call the fetcher again with the new period
+        btn.onclick = () => fetchAndRenderChart(row, container, isFunding, btn.dataset.period);
     });
 
     if (state.chartInstance) state.chartInstance.destroy();
@@ -133,6 +193,7 @@ export function renderChart(row, container, isFunding, period) {
         }
     });
 }
+
 
 /**
  * Generates time labels for chart X-axis

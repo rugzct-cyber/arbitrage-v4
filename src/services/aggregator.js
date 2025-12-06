@@ -1,8 +1,24 @@
+// src/services/aggregator.js
+
 /**
  * AGGREGATOR SERVICE V4 (Serverless Optimized)
  * - No local cache (bad for serverless - resets each request)
  * - Enhanced error handling with status per exchange
  */
+
+// 1. ADD SUPABASE IMPORT (REQUIRED FOR PHASE 2)
+const { createClient } = require('@supabase/supabase-js');
+
+// --- SUPABASE CLIENT INITIALIZATION ---
+// NOTE: These environment variables must be set in your .env file or Vercel settings.
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+
+// Initialize Supabase Client (Only if keys are present)
+const supabase = (supabaseUrl && supabaseKey)
+    ? createClient(supabaseUrl, supabaseKey)
+    : null;
+// ------------------------------------
 
 // Static imports (required for Vercel bundling)
 const adapters = {
@@ -60,6 +76,29 @@ async function getAllMarketData() {
 
     const results = await Promise.all(promises);
     const flatResults = results.flat();
+
+    // 2. NEW LOGIC: BATCH INSERT INTO SUPABASE
+    if (supabase && flatResults.length > 0) {
+        const dataToInsert = flatResults.map(item => ({
+            timestamp: new Date().toISOString(), // Use ISO string for TIMESTAMPZ type
+            pair: item.pair,
+            exchange: item.exchange,
+            price: item.price,
+            funding_rate: item.fundingRate,
+            apr: item.apr,
+        }));
+
+        // Insertion in bulk
+        const { error } = await supabase
+            .from('market_history') // Use the table name created in Supabase
+            .insert(dataToInsert);
+
+        if (error) {
+            // Log Supabase error but do not fail the main API call
+            console.error("[SUPABASE] Error inserting historical data:", error.message);
+        }
+    }
+    // ------------------------------------
 
     return {
         data: flatResults,

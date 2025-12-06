@@ -1,10 +1,12 @@
+// public/js/modules/events.js
+
 /**
  * Event Handling Module
  * Handles table event delegation and row interactions
  */
 
 import { openExchange } from '../utils.js';
-
+// We need to dynamic import charts module
 // Store row data for event delegation
 export const rowDataCache = new Map();
 
@@ -54,7 +56,7 @@ export function initTableEvents() {
 }
 
 /**
- * Toggles chart row visibility
+ * Toggles chart row visibility (UPDATED to fetch real data)
  */
 export async function toggleDetails(row, tr, isFunding) {
     const chartRow = document.getElementById(`chart-${isFunding ? 'funding' : 'price'}-${row.pair}`);
@@ -65,16 +67,16 @@ export async function toggleDetails(row, tr, isFunding) {
     document.querySelectorAll('tr.selected-row').forEach(el => el.classList.remove('selected-row'));
 
     if (!isActive) {
-        // Dynamic import of chart module on first click
-        if (!chartsModule) {
-            console.log("[PERF] Dynamically loading charts module...");
-            chartsModule = await import('./charts.js');
-        }
-
         chartRow.classList.add('active');
         tr.classList.add('selected-row');
 
-        // Use the dynamically imported function
-        chartsModule.renderChart(row, chartRow.querySelector('.inline-chart-container'), isFunding, '30D');
+        // Dynamic import of chart module on first click
+        if (!chartsModule) {
+            console.log("Dynamically loading charts module...");
+            chartsModule = await import('./charts.js');
+        }
+
+        // Start the fetching process and render loading state
+        await chartsModule.fetchAndRenderChart(row, chartRow.querySelector('.inline-chart-container'), isFunding, '30D');
     }
 }
