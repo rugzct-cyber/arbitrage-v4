@@ -18,7 +18,7 @@ const adapters = {
 };
 
 // --- CONFIGURATION ---
-const API_TIMEOUT = 5000; // 5 seconds - faster load, slow APIs will timeout
+const API_TIMEOUT = 3000; // 3 seconds - faster load, slow APIs will timeout
 
 /**
  * Fetches market data from all exchanges
