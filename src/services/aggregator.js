@@ -18,7 +18,7 @@ const adapters = {
 };
 
 // --- CONFIGURATION ---
-const API_TIMEOUT = 10000; // 10 seconds (vital for slow APIs like Hyperliquid)
+const API_TIMEOUT = 5000; // 5 seconds - faster load, slow APIs will timeout
 
 /**
  * Fetches market data from all exchanges
