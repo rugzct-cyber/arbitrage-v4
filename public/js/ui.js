@@ -7,8 +7,7 @@
 // Re-export from render module
 export { renderSkeleton, renderCurrentView, updateVisibility } from './modules/render.js';
 
-// Re-export from charts module
-export { renderChart } from './modules/charts.js';
+// Charts module is now loaded dynamically in events.js on first click
 
 // Re-export from events module
 export { initTableEvents, toggleDetails } from './modules/events.js';

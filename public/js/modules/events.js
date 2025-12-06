@@ -4,10 +4,12 @@
  */
 
 import { openExchange } from '../utils.js';
-import { renderChart } from './charts.js';
 
 // Store row data for event delegation
 export const rowDataCache = new Map();
+
+// Flag to store the dynamically imported chart module
+let chartsModule = null;
 
 /**
  * Initialize Table Event Delegation - ONE listener per table
@@ -54,7 +56,7 @@ export function initTableEvents() {
 /**
  * Toggles chart row visibility
  */
-export function toggleDetails(row, tr, isFunding) {
+export async function toggleDetails(row, tr, isFunding) {
     const chartRow = document.getElementById(`chart-${isFunding ? 'funding' : 'price'}-${row.pair}`);
     if (!chartRow) return;
     const isActive = chartRow.classList.contains('active');
@@ -63,8 +65,16 @@ export function toggleDetails(row, tr, isFunding) {
     document.querySelectorAll('tr.selected-row').forEach(el => el.classList.remove('selected-row'));
 
     if (!isActive) {
+        // Dynamic import of chart module on first click
+        if (!chartsModule) {
+            console.log("[PERF] Dynamically loading charts module...");
+            chartsModule = await import('./charts.js');
+        }
+
         chartRow.classList.add('active');
         tr.classList.add('selected-row');
-        renderChart(row, chartRow.querySelector('.inline-chart-container'), isFunding, '30D');
+
+        // Use the dynamically imported function
+        chartsModule.renderChart(row, chartRow.querySelector('.inline-chart-container'), isFunding, '30D');
     }
 }
