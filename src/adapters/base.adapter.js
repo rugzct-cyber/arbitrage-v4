@@ -14,7 +14,7 @@ module.exports = {
         // --- COLLISION MAP FOR TICKER UNIQUENESS ---
         const COLLISION_MAP = {
             'vest': {
-                'SPX': 'SPX-RWA',
+                'SPX': 'SPX500',  // RWA Index
                 'F': 'F-RWA',
                 'STRK': 'STRK-RWA',
                 'ON': 'ON-RWA',
@@ -23,6 +23,14 @@ module.exports = {
                 'DASH': 'DASH-RWA',
                 'OPEN': 'OPEN-RWA',
             },
+            'ostium': {
+                'SPX': 'SPX500'  // RWA Index
+            },
+            'extended': {
+                'SPX': 'SPX500',  // RWA Index
+                'SPX500M': 'SPX500'  // RWA Index
+            },
+            // Paradex, Lighter, Hyperliquid keep SPX as-is (crypto altcoin)
             // Add other exchanges and collision pairs here if needed
         };
         // -------------------------------------------

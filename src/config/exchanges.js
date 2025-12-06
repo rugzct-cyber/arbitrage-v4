@@ -1,11 +1,12 @@
 module.exports = {
     // Liste des exchanges activés
-    enabled: ['hyperliquid', 'paradex', 'vest', 'extended', 'lighter', 'hibachi', 'aster', 'pacifica', 'xyz'],
+    enabled: ['hyperliquid', 'paradex', 'vest', 'extended', 'lighter', 'hibachi', 'aster', 'pacifica', 'xyz', 'ostium'],
     urls: {
         hyperliquid: "https://api.hyperliquid.xyz",
         paradex: "https://api.prod.paradex.trade/v1/markets",
         aster: "https://api.asterdex.com/api/pro/v1/spot/ticker",
-        hibachi: "https://api.hibachi.xyz/market/exchange-info"
+        hibachi: "https://api.hibachi.xyz/market/exchange-info",
+        ostium: "https://metadata-backend.ostium.io"
     },
     referrals: {
         paradex: "https://app.paradex.trade/r/0xrugz",
@@ -16,6 +17,7 @@ module.exports = {
         hibachi: "https://hibachi.xyz/r/0xrugz",
         aster: "https://www.asterdex.com/en/referral/6f113B",
         pacifica: "https://app.pacifica.fi?referral=0xrugz",
-        xyz: "https://app.trade.xyz"
+        xyz: "https://app.hyperliquid.xyz/join/0XRUGZ",
+        ostium: "https://ostium.app/trade?ref=O17DA"
     }
 };

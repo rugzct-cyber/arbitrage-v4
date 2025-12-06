@@ -14,7 +14,8 @@ const adapters = {
     hibachi: require('../adapters/hibachi'),
     aster: require('../adapters/aster'),
     pacifica: require('../adapters/pacifica'),
-    xyz: require('../adapters/xyz')
+    xyz: require('../adapters/xyz'),
+    ostium: require('../adapters/ostium')
 };
 
 // --- CONFIGURATION ---
