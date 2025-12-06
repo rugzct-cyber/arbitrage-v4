@@ -300,3 +300,20 @@
     cursor: not-allowed;
     filter: grayscale(100%);
 }
+
+/* DYNAMIC TOPBAR TITLE (Mirror Effect) */
+.dynamic-topbar-title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #fff;
+    transition: opacity 0.25s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.dynamic-topbar-title.active {
+    opacity: 1;
+    pointer-events: auto;
+}

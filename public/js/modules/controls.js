@@ -43,6 +43,18 @@ export function initSidebar() {
  * Initializes tab switching
  */
 export function initTabs() {
+    const fundingTitle = document.getElementById('funding-title');
+    const priceTitle = document.getElementById('price-title');
+
+    // Apply initial state
+    if (state.activeTab === 'funding') {
+        if (fundingTitle) fundingTitle.classList.add('active');
+        if (priceTitle) priceTitle.classList.remove('active');
+    } else {
+        if (fundingTitle) fundingTitle.classList.remove('active');
+        if (priceTitle) priceTitle.classList.add('active');
+    }
+
     document.querySelectorAll('.tab-button').forEach(btn => {
         btn.onclick = () => {
             document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
@@ -50,6 +62,16 @@ export function initTabs() {
             state.activeTab = btn.dataset.tab;
             document.getElementById('funding-view').style.display = state.activeTab === 'funding' ? 'block' : 'none';
             document.getElementById('price-view').style.display = state.activeTab === 'price' ? 'block' : 'none';
+
+            // Mirror title toggle
+            if (state.activeTab === 'funding') {
+                if (fundingTitle) fundingTitle.classList.add('active');
+                if (priceTitle) priceTitle.classList.remove('active');
+            } else {
+                if (fundingTitle) fundingTitle.classList.remove('active');
+                if (priceTitle) priceTitle.classList.add('active');
+            }
+
             saveState();
             renderCurrentView();
         };

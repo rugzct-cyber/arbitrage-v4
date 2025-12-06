@@ -16,10 +16,16 @@
 <body>
     <header id="topbar">
         <div id="logo">ARBITRADE</div>
-        <div>
-            <button class="tab-button active" data-tab="funding">Funding</button>
-            <button class="tab-button" data-tab="price">Price</button>
+
+        <div style="display: flex; align-items: center; gap: 200px;">
+            <div id="funding-title" class="dynamic-topbar-title active">FUNDING OPPORTUNITIES</div>
+            <div id="tab-buttons-container">
+                <button class="tab-button active" data-tab="funding">Funding</button>
+                <button class="tab-button" data-tab="price">Price</button>
+            </div>
+            <div id="price-title" class="dynamic-topbar-title">PRICE ARBITRAGE</div>
         </div>
+
         <div style="display:flex; align-items:center; gap:15px;">
             <span id="last-update" style="color:#666; font-size:12px;">--:--</span>
             <button id="btn-refresh">REFRESH</button>
@@ -58,7 +64,6 @@
         <main id="main-content">
             <section id="funding-view">
                 <div class="table-header-controls">
-                    <h2 class="section-title">Funding Opportunities</h2>
                     <div class="funding-toggles">
                         <button class="toggle-btn" data-basis="1h">1H</button>
                         <button class="toggle-btn" data-basis="8h">8H</button>
@@ -98,7 +103,6 @@
                 <div id="funding-details-panel"></div>
             </section>
             <section id="price-view" class="hidden">
-                <h2 class="section-title">Price Arbitrage</h2>
                 <div class="table-container">
                     <table id="price-table">
                         <thead>
